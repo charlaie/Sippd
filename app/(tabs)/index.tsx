@@ -112,15 +112,17 @@ export default function HomePage() {
             {trendingShops.map((shop, index) => (
               <TouchableOpacity
                 key={shop.id}
-                className={`bg-white rounded-2xl shadow-sm mr-4 ${index === trendingShops.length - 1 ? 'mr-6' : ''}`}
+                className={`bg-white rounded-2xl shadow-sm mr-4 p-3 overflow-visible ${index === trendingShops.length - 1 ? 'mr-6' : ''}`}
                 style={{ width: 160 }}
               >
-                <Image
-                  source={{ uri: shop.image }}
-                  className="w-full h-24 rounded-t-2xl"
-                  resizeMode="cover"
-                />
-                <View className="p-4">
+                <View className="rounded-xl overflow-hidden mb-3">
+                  <Image
+                    source={{ uri: shop.image }}
+                    className="w-full h-20"
+                    resizeMode="cover"
+                  />
+                </View>
+                <View className="px-1">
                   <Text className="text-primary-text font-semibold text-sm mb-2" numberOfLines={1}>
                     {shop.name}
                   </Text>
@@ -154,15 +156,34 @@ export default function HomePage() {
             {vouchers.map((voucher, index) => (
               <View
                 key={voucher.id}
-                className={`bg-white rounded-2xl shadow-sm mr-4 p-4 ${index === vouchers.length - 1 ? 'mr-6' : ''}`}
+                className={`bg-white rounded-2xl shadow-sm mr-4 p-4 pb-6 relative overflow-visible ${index === vouchers.length - 1 ? 'mr-6' : ''}`}
                 style={{ width: 200 }}
               >
-                <View className="items-center mb-3">
+                <View className="items-center mb-4">
                   <Text className="text-3xl mb-2">{voucher.icon}</Text>
                   <Text className="text-primary-text text-sm font-medium text-center leading-5">
                     {voucher.title}
                   </Text>
                 </View>
+                
+                {/* Dashed separator line */}
+                <View 
+                  className="absolute left-0 right-0 h-px border-b border-dashed border-gray-300"
+                  style={{ top: '65%' }}
+                />
+                
+                {/* Left circular cutout */}
+                <View 
+                  className="absolute w-6 h-6 rounded-full bg-background -left-3"
+                  style={{ top: 'calc(65% - 12px)' }}
+                />
+                
+                {/* Right circular cutout */}
+                <View 
+                  className="absolute w-6 h-6 rounded-full bg-background -right-3"
+                  style={{ top: 'calc(65% - 12px)' }}
+                />
+                
                 <TouchableOpacity className="bg-secondary-primary rounded-full py-2 px-4">
                   <Text className="text-white text-sm font-semibold text-center">
                     {voucher.buttonText}
