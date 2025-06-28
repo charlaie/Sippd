@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Platform } from 'react-native';
+import { View, Platform } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 interface Shop {
@@ -57,9 +57,9 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
   ];
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1">
       <MapView
-        style={styles.map}
+        className="flex-1"
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         initialRegion={region}
         customMapStyle={mapStyle}
@@ -77,9 +77,9 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
             }}
             onPress={() => onShopPress(shop)}
           >
-            <View style={styles.markerContainer}>
-              <View style={styles.marker}>
-                <View style={styles.markerInner} />
+            <View className="items-center justify-center">
+              <View className="w-6 h-6 rounded-full bg-secondary-primary border-3 border-white shadow-lg items-center justify-center">
+                <View className="w-2 h-2 rounded-full bg-white" />
               </View>
             </View>
           </Marker>
@@ -88,40 +88,3 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  map: {
-    flex: 1,
-  },
-  markerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  marker: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    backgroundColor: '#d86a2b',
-    borderWidth: 3,
-    borderColor: '#ffffff',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  markerInner: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: '#ffffff',
-  },
-});

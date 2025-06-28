@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { MapPin } from 'lucide-react-native';
 
 interface Shop {
@@ -37,29 +37,39 @@ interface MapViewComponentProps {
 
 export default function MapViewComponent({ shops, onShopPress }: MapViewComponentProps) {
   return (
-    <View style={styles.container}>
-      <View style={styles.mapPlaceholder}>
+    <View className="flex-1 bg-gray-100">
+      <View className="flex-1 justify-center items-center bg-blue-50 m-4 rounded-xl p-8">
         <MapPin size={48} color="#d86a2b" />
-        <Text style={styles.placeholderTitle}>Map View</Text>
-        <Text style={styles.placeholderSubtitle}>
+        <Text className="text-2xl font-bold text-primary-text mt-4 mb-2">
+          Map View
+        </Text>
+        <Text className="text-base text-accent-text text-center leading-6">
           Interactive map is available on mobile devices
         </Text>
       </View>
       
-      <View style={styles.shopsList}>
-        <Text style={styles.shopsListTitle}>Nearby Shops</Text>
+      <View className="bg-white rounded-t-2xl p-4 max-h-[40%]">
+        <Text className="text-xl font-bold text-primary-text mb-4">
+          Nearby Shops
+        </Text>
         <ScrollView showsVerticalScrollIndicator={false}>
           {shops.map((shop) => (
             <TouchableOpacity
               key={shop.id}
-              style={styles.shopItem}
+              className="flex-row items-center py-3 px-2 rounded-lg mb-2 bg-gray-50"
               onPress={() => onShopPress(shop)}
             >
-              <View style={styles.shopMarker} />
-              <View style={styles.shopInfo}>
-                <Text style={styles.shopName}>{shop.name}</Text>
-                <Text style={styles.shopLocation}>{shop.location}</Text>
-                <Text style={styles.shopDistance}>{shop.distance}</Text>
+              <View className="w-4 h-4 rounded-full bg-secondary-primary mr-3" />
+              <View className="flex-1">
+                <Text className="text-base font-semibold text-primary-text mb-1">
+                  {shop.name}
+                </Text>
+                <Text className="text-sm text-accent-text mb-1">
+                  {shop.location}
+                </Text>
+                <Text className="text-xs text-gray-400">
+                  {shop.distance}
+                </Text>
               </View>
             </TouchableOpacity>
           ))}
@@ -68,79 +78,3 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  mapPlaceholder: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#e8f4f8',
-    margin: 16,
-    borderRadius: 12,
-    padding: 32,
-  },
-  placeholderTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  placeholderSubtitle: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    lineHeight: 22,
-  },
-  shopsList: {
-    backgroundColor: '#fff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 16,
-    maxHeight: '40%',
-  },
-  shopsListTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 16,
-  },
-  shopItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderRadius: 8,
-    marginBottom: 8,
-    backgroundColor: '#f9f9f9',
-  },
-  shopMarker: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#d86a2b',
-    marginRight: 12,
-  },
-  shopInfo: {
-    flex: 1,
-  },
-  shopName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 2,
-  },
-  shopLocation: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 2,
-  },
-  shopDistance: {
-    fontSize: 12,
-    color: '#999',
-  },
-});

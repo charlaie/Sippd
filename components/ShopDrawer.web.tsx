@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
   TouchableOpacity,
   Image,
@@ -101,106 +100,147 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
   if (!shop) return null;
 
   return (
-    <Animated.View style={[styles.container, animatedStyle]}>
+    <Animated.View 
+      style={[animatedStyle]} 
+      className="absolute top-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl"
+      style={{ height: SCREEN_HEIGHT }}
+    >
       {/* Web-specific header with close button and expand toggle */}
-      <View style={styles.webHeader}>
-        <TouchableOpacity style={styles.expandButton} onPress={toggleExpanded}>
-          <View style={styles.handle} />
+      <View className="flex-row justify-between items-center px-5 py-3">
+        <TouchableOpacity className="flex-1 items-center" onPress={toggleExpanded}>
+          <View className="w-10 h-1 bg-gray-300 rounded-full" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+        <TouchableOpacity 
+          className="w-8 h-8 items-center justify-center bg-gray-50 rounded-full"
+          onPress={onClose}
+        >
           <X size={20} color="#707070" />
         </TouchableOpacity>
       </View>
 
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
         {/* Header Section */}
-        <View style={styles.header}>
-          <View style={styles.headerTop}>
-            <View style={styles.titleContainer}>
-              <Text style={styles.shopName}>{shop.name}</Text>
-              <View style={styles.ratingContainer}>
+        <View className="mb-5">
+          <View className="flex-row justify-between items-start mb-2">
+            <View className="flex-1">
+              <Text className="text-2xl font-bold text-primary-text mb-1">
+                {shop.name}
+              </Text>
+              <View className="flex-row items-center">
                 <Star size={16} color="#FFD700" fill="#FFD700" />
-                <Text style={styles.rating}>{shop.rating}</Text>
-                <Text style={styles.reviewCount}>({shop.reviews.length} reviews)</Text>
+                <Text className="text-sm font-semibold text-primary-text ml-1">
+                  {shop.rating}
+                </Text>
+                <Text className="text-sm text-accent-text ml-1">
+                  ({shop.reviews.length} reviews)
+                </Text>
               </View>
             </View>
-            <View style={styles.statusContainer}>
-              <View style={[styles.statusBadge, { backgroundColor: shop.isOpen ? '#10B981' : '#EF4444' }]}>
-                <Text style={styles.statusText}>{shop.isOpen ? 'OPEN' : 'CLOSED'}</Text>
+            <View className="items-end">
+              <View className={`px-2 py-1 rounded-xl mb-1 ${shop.isOpen ? 'bg-green-500' : 'bg-red-500'}`}>
+                <Text className="text-xs font-bold text-white">
+                  {shop.isOpen ? 'OPEN' : 'CLOSED'}
+                </Text>
               </View>
-              <Text style={styles.distance}>{shop.distance}</Text>
+              <Text className="text-sm text-accent-text">
+                {shop.distance}
+              </Text>
             </View>
           </View>
 
-          <View style={styles.locationContainer}>
+          <View className="flex-row items-center mb-1">
             <MapPin size={14} color="#707070" />
-            <Text style={styles.location}>{shop.location}</Text>
+            <Text className="text-sm text-accent-text ml-1.5 flex-1">
+              {shop.location}
+            </Text>
           </View>
 
-          <View style={styles.hoursContainer}>
+          <View className="flex-row items-center">
             <Clock size={14} color="#707070" />
-            <Text style={styles.hours}>{shop.hours}</Text>
+            <Text className="text-sm text-accent-text ml-1.5">
+              {shop.hours}
+            </Text>
           </View>
         </View>
 
         {/* Action Buttons */}
-        <View style={styles.actionButtons}>
-          <TouchableOpacity style={styles.primaryButton}>
+        <View className="flex-row mb-6 gap-3">
+          <TouchableOpacity className="flex-1 bg-secondary-primary flex-row items-center justify-center py-3 rounded-xl gap-2">
             <Navigation size={18} color="#ffffff" />
-            <Text style={styles.primaryButtonText}>Navigate</Text>
+            <Text className="text-white text-base font-semibold">Navigate</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.secondaryButton}>
+          <TouchableOpacity className="flex-1 bg-white border border-secondary-primary flex-row items-center justify-center py-3 rounded-xl gap-2">
             <Phone size={18} color="#d86a2b" />
-            <Text style={styles.secondaryButtonText}>Call</Text>
+            <Text className="text-secondary-primary text-base font-semibold">Call</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity className="w-12 h-12 bg-gray-50 items-center justify-center rounded-xl">
             <Heart size={20} color="#707070" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
+          <TouchableOpacity className="w-12 h-12 bg-gray-50 items-center justify-center rounded-xl">
             <Share2 size={20} color="#707070" />
           </TouchableOpacity>
         </View>
 
         {/* Featured Items */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Featured Items</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.featuredItems}>
+        <View className="mb-6">
+          <Text className="text-lg font-bold text-primary-text mb-3">
+            Featured Items
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-5 px-5">
             {shop.featuredItems.map((item, index) => (
-              <View key={index} style={styles.featuredItem}>
-                <Image source={{ uri: item.image }} style={styles.itemImage} />
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemPrice}>{item.price}</Text>
+              <View key={index} className="w-30 mr-4">
+                <Image source={{ uri: item.image }} className="w-30 h-20 rounded-xl mb-2" />
+                <Text className="text-sm font-medium text-primary-text mb-0.5">
+                  {item.name}
+                </Text>
+                <Text className="text-sm text-secondary-primary font-semibold">
+                  {item.price}
+                </Text>
               </View>
             ))}
           </ScrollView>
         </View>
 
         {/* Photo Gallery */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Photos</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.photoGallery}>
-            <Image source={{ uri: shop.image }} style={styles.galleryImage} />
-            <Image source={{ uri: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=300' }} style={styles.galleryImage} />
-            <Image source={{ uri: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=300' }} style={styles.galleryImage} />
+        <View className="mb-6">
+          <Text className="text-lg font-bold text-primary-text mb-3">
+            Photos
+          </Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-5 px-5">
+            <Image source={{ uri: shop.image }} className="w-50 h-30 rounded-xl mr-3" />
+            <Image 
+              source={{ uri: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=300' }} 
+              className="w-50 h-30 rounded-xl mr-3" 
+            />
+            <Image 
+              source={{ uri: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=300' }} 
+              className="w-50 h-30 rounded-xl mr-3" 
+            />
           </ScrollView>
         </View>
 
         {/* Reviews */}
-        <View style={styles.section}>
-          <View style={styles.sectionHeader}>
-            <Text style={styles.sectionTitle}>Top Reviews</Text>
-            <TouchableOpacity style={styles.seeAllButton}>
-              <Text style={styles.seeAllText}>See all {shop.reviews.length}</Text>
+        <View className="mb-6">
+          <View className="flex-row justify-between items-center mb-3">
+            <Text className="text-lg font-bold text-primary-text">
+              Top Reviews
+            </Text>
+            <TouchableOpacity className="flex-row items-center gap-1">
+              <Text className="text-sm text-secondary-primary font-medium">
+                See all {shop.reviews.length}
+              </Text>
               <ChevronRight size={16} color="#d86a2b" />
             </TouchableOpacity>
           </View>
           {shop.reviews.slice(0, 3).map((review) => (
-            <View key={review.id} style={styles.reviewItem}>
-              <View style={styles.reviewHeader}>
-                <Image source={{ uri: review.userImage }} style={styles.userImage} />
-                <View style={styles.reviewInfo}>
-                  <Text style={styles.userName}>{review.user}</Text>
-                  <View style={styles.reviewRating}>
+            <View key={review.id} className="mb-4 pb-4 border-b border-gray-100">
+              <View className="flex-row items-center mb-2">
+                <Image source={{ uri: review.userImage }} className="w-10 h-10 rounded-full mr-3" />
+                <View className="flex-1">
+                  <Text className="text-sm font-semibold text-primary-text mb-0.5">
+                    {review.user}
+                  </Text>
+                  <View className="flex-row gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -212,329 +252,47 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
                   </View>
                 </View>
               </View>
-              <Text style={styles.reviewComment}>{review.comment}</Text>
+              <Text className="text-sm text-accent-text leading-5">
+                {review.comment}
+              </Text>
             </View>
           ))}
         </View>
 
         {/* Menu Button */}
-        <TouchableOpacity style={styles.menuButton}>
-          <Text style={styles.menuButtonText}>View Full Menu</Text>
+        <TouchableOpacity className="bg-secondary-primary py-4 rounded-xl items-center mb-6">
+          <Text className="text-white text-base font-bold">
+            View Full Menu
+          </Text>
         </TouchableOpacity>
 
         {/* About Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>About</Text>
-          <Text style={styles.description}>{shop.description}</Text>
+        <View className="mb-6">
+          <Text className="text-lg font-bold text-primary-text mb-3">
+            About
+          </Text>
+          <Text className="text-sm text-accent-text leading-5 mb-4">
+            {shop.description}
+          </Text>
           
-          <View style={styles.contactInfo}>
-            <TouchableOpacity style={styles.contactItem}>
+          <View className="gap-3">
+            <TouchableOpacity className="flex-row items-center gap-2">
               <Phone size={16} color="#707070" />
-              <Text style={styles.contactText}>{shop.phone}</Text>
+              <Text className="text-sm text-accent-text">
+                {shop.phone}
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.contactItem}>
+            <TouchableOpacity className="flex-row items-center gap-2">
               <Globe size={16} color="#707070" />
-              <Text style={styles.contactText}>{shop.website}</Text>
+              <Text className="text-sm text-accent-text">
+                {shop.website}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={styles.bottomPadding} />
+        <View className="h-25" />
       </ScrollView>
     </Animated.View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: SCREEN_HEIGHT,
-    backgroundColor: '#ffffff',
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -4,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 8,
-  },
-  webHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-  },
-  expandButton: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  handle: {
-    width: 40,
-    height: 4,
-    backgroundColor: '#E5E7EB',
-    borderRadius: 2,
-  },
-  closeButton: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#f9fafb',
-    borderRadius: 16,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  header: {
-    marginBottom: 20,
-  },
-  headerTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    marginBottom: 8,
-  },
-  titleContainer: {
-    flex: 1,
-  },
-  shopName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#4f4f4f',
-    marginBottom: 4,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rating: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#4f4f4f',
-    marginLeft: 4,
-  },
-  reviewCount: {
-    fontSize: 14,
-    color: '#707070',
-    marginLeft: 4,
-  },
-  statusContainer: {
-    alignItems: 'flex-end',
-  },
-  statusBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
-    marginBottom: 4,
-  },
-  statusText: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    color: '#ffffff',
-  },
-  distance: {
-    fontSize: 14,
-    color: '#707070',
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 4,
-  },
-  location: {
-    fontSize: 14,
-    color: '#707070',
-    marginLeft: 6,
-    flex: 1,
-  },
-  hoursContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  hours: {
-    fontSize: 14,
-    color: '#707070',
-    marginLeft: 6,
-  },
-  actionButtons: {
-    flexDirection: 'row',
-    marginBottom: 24,
-    gap: 12,
-  },
-  primaryButton: {
-    flex: 1,
-    backgroundColor: '#d86a2b',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 12,
-    gap: 8,
-  },
-  primaryButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  secondaryButton: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#d86a2b',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    borderRadius: 12,
-    gap: 8,
-  },
-  secondaryButtonText: {
-    color: '#d86a2b',
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  iconButton: {
-    width: 48,
-    height: 48,
-    backgroundColor: '#f9fafb',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 12,
-  },
-  section: {
-    marginBottom: 24,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 12,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#4f4f4f',
-    marginBottom: 12,
-  },
-  seeAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  seeAllText: {
-    fontSize: 14,
-    color: '#d86a2b',
-    fontWeight: '500',
-  },
-  featuredItems: {
-    marginLeft: -20,
-    paddingLeft: 20,
-  },
-  featuredItem: {
-    width: 120,
-    marginRight: 16,
-  },
-  itemImage: {
-    width: 120,
-    height: 80,
-    borderRadius: 12,
-    marginBottom: 8,
-  },
-  itemName: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#4f4f4f',
-    marginBottom: 2,
-  },
-  itemPrice: {
-    fontSize: 14,
-    color: '#d86a2b',
-    fontWeight: '600',
-  },
-  photoGallery: {
-    marginLeft: -20,
-    paddingLeft: 20,
-  },
-  galleryImage: {
-    width: 200,
-    height: 120,
-    borderRadius: 12,
-    marginRight: 12,
-  },
-  reviewItem: {
-    marginBottom: 16,
-    paddingBottom: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f3f4f6',
-  },
-  reviewHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 8,
-  },
-  userImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 12,
-  },
-  reviewInfo: {
-    flex: 1,
-  },
-  userName: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#4f4f4f',
-    marginBottom: 2,
-  },
-  reviewRating: {
-    flexDirection: 'row',
-    gap: 2,
-  },
-  reviewComment: {
-    fontSize: 14,
-    color: '#707070',
-    lineHeight: 20,
-  },
-  menuButton: {
-    backgroundColor: '#d86a2b',
-    paddingVertical: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  menuButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  description: {
-    fontSize: 14,
-    color: '#707070',
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  contactInfo: {
-    gap: 12,
-  },
-  contactItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  contactText: {
-    fontSize: 14,
-    color: '#707070',
-  },
-  bottomPadding: {
-    height: 100,
-  },
-});
