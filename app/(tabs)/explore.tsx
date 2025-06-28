@@ -208,54 +208,6 @@ export default function ExplorePage() {
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fffcf6" />
       
-      {/* Header with Toggle Buttons */}
-      <SafeAreaView style={styles.header}>
-        <Text style={styles.title}>Explore</Text>
-        <View style={styles.toggleContainer}>
-          <TouchableOpacity
-            style={[
-              styles.toggleButton,
-              styles.leftToggle,
-              viewMode === 'map' && styles.activeToggle,
-            ]}
-            onPress={() => setViewMode('map')}
-          >
-            <Map 
-              size={18} 
-              color={viewMode === 'map' ? '#ffffff' : '#d86a2b'} 
-              strokeWidth={2}
-            />
-            <Text style={[
-              styles.toggleText,
-              viewMode === 'map' && styles.activeToggleText,
-            ]}>
-              Map View
-            </Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={[
-              styles.toggleButton,
-              styles.rightToggle,
-              viewMode === 'list' && styles.activeToggle,
-            ]}
-            onPress={() => setViewMode('list')}
-          >
-            <List 
-              size={18} 
-              color={viewMode === 'list' ? '#ffffff' : '#d86a2b'} 
-              strokeWidth={2}
-            />
-            <Text style={[
-              styles.toggleText,
-              viewMode === 'list' && styles.activeToggleText,
-            ]}>
-              List View
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </SafeAreaView>
-
       {/* Content */}
       <View style={styles.content}>
         {viewMode === 'map' ? (
@@ -281,78 +233,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fffcf6',
-  },
-  header: {
-    backgroundColor: '#fffcf6',
-    paddingHorizontal: 20,
-    paddingBottom: 16,
-    zIndex: 10,
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-      },
-      android: {
-        elevation: 4,
-      },
-    }),
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#4f4f4f',
-    marginBottom: 16,
-  },
-  toggleContainer: {
-    flexDirection: 'row',
-    backgroundColor: '#ffffff',
-    borderRadius: 25,
-    padding: 4,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 4,
-  },
-  toggleButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    borderRadius: 21,
-    gap: 8,
-  },
-  leftToggle: {
-    marginRight: 2,
-  },
-  rightToggle: {
-    marginLeft: 2,
-  },
-  activeToggle: {
-    backgroundColor: '#d86a2b',
-    shadowColor: '#d86a2b',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  toggleText: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#d86a2b',
-  },
-  activeToggleText: {
-    color: '#ffffff',
   },
   content: {
     flex: 1,

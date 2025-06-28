@@ -48,20 +48,22 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
       
       <View style={styles.shopsList}>
         <Text style={styles.shopsListTitle}>Nearby Shops</Text>
-        {shops.map((shop) => (
-          <TouchableOpacity
-            key={shop.id}
-            style={styles.shopItem}
-            onPress={() => onShopPress(shop)}
-          >
-            <View style={styles.shopMarker} />
-            <View style={styles.shopInfo}>
-              <Text style={styles.shopName}>{shop.name}</Text>
-              <Text style={styles.shopLocation}>{shop.location}</Text>
-              <Text style={styles.shopDistance}>{shop.distance}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {shops.map((shop) => (
+            <TouchableOpacity
+              key={shop.id}
+              style={styles.shopItem}
+              onPress={() => onShopPress(shop)}
+            >
+              <View style={styles.shopMarker} />
+              <View style={styles.shopInfo}>
+                <Text style={styles.shopName}>{shop.name}</Text>
+                <Text style={styles.shopLocation}>{shop.location}</Text>
+                <Text style={styles.shopDistance}>{shop.distance}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
