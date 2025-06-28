@@ -58,7 +58,7 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
 
   return (
     <Drawer
-      isVisible={true}
+      isVisible={isVisible}
       onClose={onClose}
       initialState="half"
       snapPoints={{
