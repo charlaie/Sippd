@@ -1,22 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   Image,
-  Dimensions,
-  Platform,
 } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-  runOnJS,
-  useAnimatedGestureHandler,
-} from 'react-native-reanimated';
-import { PanGestureHandler } from 'react-native-gesture-handler';
-import * as Haptics from 'expo-haptics';
 import {
   Star,
   MapPin,
@@ -28,11 +17,7 @@ import {
   Share2,
   ChevronRight,
 } from 'lucide-react-native';
-
-const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-const DRAWER_HEIGHT = SCREEN_HEIGHT * 0.5;
-const EXPANDED_HEIGHT = SCREEN_HEIGHT * 0.9;
-const SNAP_THRESHOLD = 100;
+import Drawer from './Drawer';
 
 interface Shop {
   id: number;
@@ -69,165 +54,20 @@ interface ShopDrawerProps {
 }
 
 export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps) {
-  const translateY = useSharedValue(SCREEN_HEIGHT);
-  const currentState = useSharedValue<'hidden' | 'half' | 'full'>('hidden');
-
-  const triggerHaptic = () => {
-    if (Platform.OS !== 'web') {
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    }
-  };
-
-  useEffect(() => {
-    if (isVisible && shop) {
-      translateY.value = withSpring(SCREEN_HEIGHT - DRAWER_HEIGHT, {
-        damping: 20,
-        stiffness: 90,
-      });
-      currentState.value = 'half';
-      runOnJS(triggerHaptic)();
-    } else {
-      translateY.value = withSpring(SCREEN_HEIGHT, {
-        damping: 20,
-        stiffness: 90,
-      });
-      currentState.value = 'hidden';
-    }
-  }, [isVisible, shop]);
-
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, context) => {
-      context.startY = translateY.value;
-      context.startState = currentState.value;
-    },
-    onActive: (event, context) => {
-      const newY = context.startY + event.translationY;
-      
-      // Constrain the movement
-      if (newY < SCREEN_HEIGHT - EXPANDED_HEIGHT) {
-        translateY.value = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-      } else if (newY > SCREEN_HEIGHT) {
-        translateY.value = SCREEN_HEIGHT;
-      } else {
-        translateY.value = newY;
-      }
-    },
-    onEnd: (event, context) => {
-      const currentY = translateY.value;
-      const velocity = event.velocityY;
-      const translation = event.translationY;
-
-      // Determine target position based on gesture
-      let targetY: number;
-      let newState: 'hidden' | 'half' | 'full';
-
-      if (Math.abs(velocity) > 500) {
-        // Fast gesture - prioritize velocity direction
-        if (velocity > 0) {
-          // Fast swipe down
-          if (context.startState === 'full') {
-            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
-            newState = 'half';
-          } else {
-            targetY = SCREEN_HEIGHT;
-            newState = 'hidden';
-          }
-        } else {
-          // Fast swipe up
-          if (context.startState === 'half') {
-            targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-            newState = 'full';
-          } else {
-            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
-            newState = 'half';
-          }
-        }
-      } else {
-        // Slow gesture - use position and translation
-        const halfPoint = SCREEN_HEIGHT - DRAWER_HEIGHT;
-        const fullPoint = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-        const midBetweenHalfAndFull = (halfPoint + fullPoint) / 2;
-        const midBetweenHalfAndHidden = (halfPoint + SCREEN_HEIGHT) / 2;
-
-        if (currentY < midBetweenHalfAndFull) {
-          // Closer to full
-          targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-          newState = 'full';
-        } else if (currentY < midBetweenHalfAndHidden) {
-          // Closer to half
-          targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
-          newState = 'half';
-        } else {
-          // Closer to hidden
-          targetY = SCREEN_HEIGHT;
-          newState = 'hidden';
-        }
-
-        // Override based on translation direction if significant
-        if (Math.abs(translation) > SNAP_THRESHOLD) {
-          if (translation > 0 && context.startState === 'full') {
-            // Dragged down from full
-            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
-            newState = 'half';
-          } else if (translation > 0 && context.startState === 'half') {
-            // Dragged down from half
-            targetY = SCREEN_HEIGHT;
-            newState = 'hidden';
-          } else if (translation < 0 && context.startState === 'half') {
-            // Dragged up from half
-            targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-            newState = 'full';
-          }
-        }
-      }
-
-      // Animate to target position
-      translateY.value = withSpring(targetY, {
-        damping: 20,
-        stiffness: 90,
-      });
-
-      // Update state and trigger haptic feedback
-      if (newState !== context.startState) {
-        currentState.value = newState;
-        runOnJS(triggerHaptic)();
-      }
-
-      // Close drawer if hidden
-      if (newState === 'hidden') {
-        runOnJS(onClose)();
-      }
-    },
-  });
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateY: translateY.value }],
-    };
-  });
-
   if (!shop) return null;
 
   return (
-    <Animated.View 
-      style={[
-        animatedStyle,
-        {
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: SCREEN_HEIGHT,
-        }
-      ]}
-      className="bg-white rounded-t-2xl shadow-2xl"
+    <Drawer
+      isVisible={isVisible}
+      onClose={onClose}
+      initialState="half"
+      snapPoints={{
+        half: 0.5,
+        full: 0.9,
+      }}
+      enableGestures={true}
+      enableHaptics={true}
     >
-      <PanGestureHandler onGestureEvent={gestureHandler}>
-        <Animated.View className="items-center py-3">
-          <View className="w-10 h-1 bg-gray-300 rounded-full" />
-        </Animated.View>
-      </PanGestureHandler>
-
       <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View className="mb-5">
@@ -403,6 +243,6 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
 
         <View className="h-25" />
       </ScrollView>
-    </Animated.View>
+    </Drawer>
   );
 }
