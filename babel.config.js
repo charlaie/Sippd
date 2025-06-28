@@ -5,6 +5,7 @@ module.exports = function (api) {
     plugins: [
       [
         'module-resolver',
+        'react-native-reanimated/plugin',
         {
           root: ['.'],
           alias: {
