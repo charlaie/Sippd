@@ -55,8 +55,8 @@ export default function Drawer({
   // Calculate snap points
   const drawerState: DrawerState = {
     hidden: SCREEN_HEIGHT,
-    half: SCREEN_HEIGHT - (snapPoints.half || SCREEN_HEIGHT * 0.5),
-    full: SCREEN_HEIGHT - (snapPoints.full || SCREEN_HEIGHT * 0.9),
+    half: SCREEN_HEIGHT - (snapPoints.half ? snapPoints.half * SCREEN_HEIGHT : SCREEN_HEIGHT * 0.5),
+    full: SCREEN_HEIGHT - (snapPoints.full ? snapPoints.full * SCREEN_HEIGHT : SCREEN_HEIGHT * 0.9),
   };
 
   const triggerHaptic = () => {
