@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Platform,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -15,6 +16,7 @@ import Animated, {
   useAnimatedGestureHandler,
 } from 'react-native-reanimated';
 import { PanGestureHandler } from 'react-native-gesture-handler';
+import * as Haptics from 'expo-haptics';
 import {
   Star,
   MapPin,
@@ -30,6 +32,7 @@ import {
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const DRAWER_HEIGHT = SCREEN_HEIGHT * 0.5;
 const EXPANDED_HEIGHT = SCREEN_HEIGHT * 0.9;
+const SNAP_THRESHOLD = 100;
 
 interface Shop {
   id: number;
@@ -67,7 +70,13 @@ interface ShopDrawerProps {
 
 export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps) {
   const translateY = useSharedValue(SCREEN_HEIGHT);
-  const isExpanded = useSharedValue(false);
+  const currentState = useSharedValue<'hidden' | 'half' | 'full'>('hidden');
+
+  const triggerHaptic = () => {
+    if (Platform.OS !== 'web') {
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+    }
+  };
 
   useEffect(() => {
     if (isVisible && shop) {
@@ -75,54 +84,118 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
         damping: 20,
         stiffness: 90,
       });
+      currentState.value = 'half';
+      runOnJS(triggerHaptic)();
     } else {
       translateY.value = withSpring(SCREEN_HEIGHT, {
         damping: 20,
         stiffness: 90,
       });
+      currentState.value = 'hidden';
     }
   }, [isVisible, shop]);
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart: (_, context) => {
       context.startY = translateY.value;
+      context.startState = currentState.value;
     },
     onActive: (event, context) => {
       const newY = context.startY + event.translationY;
+      
+      // Constrain the movement
       if (newY < SCREEN_HEIGHT - EXPANDED_HEIGHT) {
         translateY.value = SCREEN_HEIGHT - EXPANDED_HEIGHT;
-      } else if (newY > SCREEN_HEIGHT - 100) {
-        translateY.value = newY;
+      } else if (newY > SCREEN_HEIGHT) {
+        translateY.value = SCREEN_HEIGHT;
       } else {
         translateY.value = newY;
       }
     },
-    onEnd: (event) => {
+    onEnd: (event, context) => {
       const currentY = translateY.value;
       const velocity = event.velocityY;
+      const translation = event.translationY;
 
-      if (velocity > 500) {
-        // Fast swipe down - close
-        translateY.value = withSpring(SCREEN_HEIGHT);
-        runOnJS(onClose)();
-      } else if (velocity < -500) {
-        // Fast swipe up - expand
-        translateY.value = withSpring(SCREEN_HEIGHT - EXPANDED_HEIGHT);
-        isExpanded.value = true;
-      } else {
-        // Slow drag - snap to nearest position
-        const halfExpanded = SCREEN_HEIGHT - (DRAWER_HEIGHT + EXPANDED_HEIGHT) / 2;
-        
-        if (currentY < halfExpanded) {
-          translateY.value = withSpring(SCREEN_HEIGHT - EXPANDED_HEIGHT);
-          isExpanded.value = true;
-        } else if (currentY > SCREEN_HEIGHT - 150) {
-          translateY.value = withSpring(SCREEN_HEIGHT);
-          runOnJS(onClose)();
+      // Determine target position based on gesture
+      let targetY: number;
+      let newState: 'hidden' | 'half' | 'full';
+
+      if (Math.abs(velocity) > 500) {
+        // Fast gesture - prioritize velocity direction
+        if (velocity > 0) {
+          // Fast swipe down
+          if (context.startState === 'full') {
+            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
+            newState = 'half';
+          } else {
+            targetY = SCREEN_HEIGHT;
+            newState = 'hidden';
+          }
         } else {
-          translateY.value = withSpring(SCREEN_HEIGHT - DRAWER_HEIGHT);
-          isExpanded.value = false;
+          // Fast swipe up
+          if (context.startState === 'half') {
+            targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
+            newState = 'full';
+          } else {
+            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
+            newState = 'half';
+          }
         }
+      } else {
+        // Slow gesture - use position and translation
+        const halfPoint = SCREEN_HEIGHT - DRAWER_HEIGHT;
+        const fullPoint = SCREEN_HEIGHT - EXPANDED_HEIGHT;
+        const midBetweenHalfAndFull = (halfPoint + fullPoint) / 2;
+        const midBetweenHalfAndHidden = (halfPoint + SCREEN_HEIGHT) / 2;
+
+        if (currentY < midBetweenHalfAndFull) {
+          // Closer to full
+          targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
+          newState = 'full';
+        } else if (currentY < midBetweenHalfAndHidden) {
+          // Closer to half
+          targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
+          newState = 'half';
+        } else {
+          // Closer to hidden
+          targetY = SCREEN_HEIGHT;
+          newState = 'hidden';
+        }
+
+        // Override based on translation direction if significant
+        if (Math.abs(translation) > SNAP_THRESHOLD) {
+          if (translation > 0 && context.startState === 'full') {
+            // Dragged down from full
+            targetY = SCREEN_HEIGHT - DRAWER_HEIGHT;
+            newState = 'half';
+          } else if (translation > 0 && context.startState === 'half') {
+            // Dragged down from half
+            targetY = SCREEN_HEIGHT;
+            newState = 'hidden';
+          } else if (translation < 0 && context.startState === 'half') {
+            // Dragged up from half
+            targetY = SCREEN_HEIGHT - EXPANDED_HEIGHT;
+            newState = 'full';
+          }
+        }
+      }
+
+      // Animate to target position
+      translateY.value = withSpring(targetY, {
+        damping: 20,
+        stiffness: 90,
+      });
+
+      // Update state and trigger haptic feedback
+      if (newState !== context.startState) {
+        currentState.value = newState;
+        runOnJS(triggerHaptic)();
+      }
+
+      // Close drawer if hidden
+      if (newState === 'hidden') {
+        runOnJS(onClose)();
       }
     },
   });
@@ -137,9 +210,17 @@ export default function ShopDrawer({ shop, isVisible, onClose }: ShopDrawerProps
 
   return (
     <Animated.View 
-      style={[animatedStyle]} 
-      className="absolute top-0 left-0 right-0 bg-white rounded-t-2xl shadow-2xl"
-      style={{ height: SCREEN_HEIGHT }}
+      style={[
+        animatedStyle,
+        {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: SCREEN_HEIGHT,
+        }
+      ]}
+      className="bg-white rounded-t-2xl shadow-2xl"
     >
       <PanGestureHandler onGestureEvent={gestureHandler}>
         <Animated.View className="items-center py-3">
