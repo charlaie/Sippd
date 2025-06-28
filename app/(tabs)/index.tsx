@@ -169,19 +169,19 @@ export default function HomePage() {
                 {/* Dashed separator line */}
                 <View 
                   className="absolute left-0 right-0 h-px border-b border-dashed border-gray-300"
-                  style={{ top: '65%' }}
+                  style={{ top: '55%' }}
                 />
                 
                 {/* Left circular cutout */}
                 <View 
-                  className="absolute w-6 h-6 rounded-full bg-background -left-3"
-                  style={{ top: 'calc(65% - 12px)' }}
+                  className="absolute w-6 h-6 rounded-full bg-background shadow-sm -left-3"
+                  style={{ top: 'calc(55% - 12px)' }}
                 />
                 
                 {/* Right circular cutout */}
                 <View 
-                  className="absolute w-6 h-6 rounded-full bg-background -right-3"
-                  style={{ top: 'calc(65% - 12px)' }}
+                  className="absolute w-6 h-6 rounded-full bg-background shadow-sm -right-3"
+                  style={{ top: 'calc(55% - 12px)' }}
                 />
                 
                 <TouchableOpacity className="bg-secondary-primary rounded-full py-2 px-4">
