@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MapPin, Star, ChevronRight } from 'lucide-react-native';
 
@@ -99,11 +99,11 @@ export default function HomePage() {
         </View>
 
         {/* Trending Shops */}
-        <View className="px-6 mb-6">
-          <View className="flex-row justify-between items-center mb-4">
-            <Text className="text-primary-text text-xl font-bold">Trending Shops</Text>
-            <TouchableOpacity className="flex-row items-center">
-              <Text className="text-secondary-primary text-sm font-medium mr-1">See all</Text>
+        <View style={styles.sectionContainer}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Trending Shops</Text>
+            <TouchableOpacity style={styles.seeAllButton}>
+              <Text style={styles.seeAllText}>See all</Text>
               <ChevronRight size={16} color="#d86a2b" />
             </TouchableOpacity>
           </View>
@@ -111,33 +111,35 @@ export default function HomePage() {
           <ScrollView 
             horizontal 
             showsHorizontalScrollIndicator={false} 
-            className="pl-6"
-            contentContainerStyle={{ paddingRight: 24 }}
+            style={styles.horizontalScroll}
+            contentContainerStyle={styles.scrollContent}
           >
             {trendingShops.map((shop, index) => (
               <TouchableOpacity
                 key={shop.id}
-                className="w-40 bg-white rounded-xl shadow-sm overflow-hidden"
-                style={{ marginRight: index === trendingShops.length - 1 ? 24 : 16 }}
+                style={[
+                  styles.shopCard,
+                  { marginRight: index === trendingShops.length - 1 ? 24 : 16 }
+                ]}
               >
-                <View className="w-full h-24">
+                <View style={styles.imageContainer}>
                   <Image
                     source={{ uri: shop.image }}
-                    className="w-full h-full"
+                    style={styles.shopImage}
                     resizeMode="cover"
                   />
                 </View>
-                <View className="p-3">
-                  <Text className="text-primary-text text-base font-semibold mb-1" numberOfLines={1}>
+                <View style={styles.shopInfo}>
+                  <Text style={styles.shopName} numberOfLines={1}>
                     {shop.name}
                   </Text>
-                  <View className="flex-row items-center mb-1">
+                  <View style={styles.ratingContainer}>
                     <Star size={12} color="#FFD700" fill="#FFD700" />
-                    <Text className="text-accent-text text-xs ml-1">{shop.rating}</Text>
+                    <Text style={styles.ratingText}>{shop.rating}</Text>
                   </View>
-                  <View className="flex-row items-center">
-                    <MapPin size={10} color="#707070" className="mr-1" />
-                    <Text className="text-accent-text text-xs" numberOfLines={2}>
+                  <View style={styles.locationContainer}>
+                    <MapPin size={10} color="#707070" style={styles.locationIcon} />
+                    <Text style={styles.locationText} numberOfLines={2}>
                       {shop.location}
                     </Text>
                   </View>
