@@ -1,4 +1,5 @@
 import { Tabs } from 'expo-router';
+import { View } from 'react-native';
 import { Chrome as Home, Search, Plus, Map, User } from 'lucide-react-native';
 
 export default function TabLayout() {
@@ -60,11 +61,23 @@ export default function TabLayout() {
             <Plus size={32} color="#ffffff" strokeWidth={2} />
           ),
           tabBarButton: (props) => (
-            <div className="flex-1 items-center justify-center">
-              <div className="w-14 h-14 bg-secondary-primary rounded-full items-center justify-center shadow-lg">
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <View style={{ 
+                width: 56, 
+                height: 56, 
+                backgroundColor: '#d86a2b', 
+                borderRadius: 28, 
+                alignItems: 'center', 
+                justifyContent: 'center',
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 4,
+                elevation: 5,
+              }}>
                 <Plus size={24} color="#ffffff" strokeWidth={2} />
-              </div>
-            </div>
+              </View>
+            </View>
           ),
         }}
       />
