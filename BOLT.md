@@ -1,0 +1,1 @@
+Use expo to make this react native project. Use nativewind for all styling.
