@@ -1,31 +1,10 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MapPin, Star, ChevronRight } from 'lucide-react-native';
+import shopsData from '../../data/shops.json';
 
 export default function HomePage() {
-  const trendingShops = [
-    {
-      id: 1,
-      name: 'Ten Ren Tea',
-      rating: 4.8,
-      location: 'Floor 2, 9 On Pong Rd, Tai Po',
-      image: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400',
-    },
-    {
-      id: 2,
-      name: 'Tiger Sugar',
-      rating: 4.9,
-      location: 'Floor 2, 9 On Pong Rd, Tai Po',
-      image: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=400',
-    },
-    {
-      id: 3,
-      name: 'CHICHA San Chen',
-      rating: 4.7,
-      location: 'Floor 2, 9 On Pong Rd, Tai Po',
-      image: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=400',
-    },
-  ];
+  const { trendingShops } = shopsData;
 
   const vouchers = [
     {

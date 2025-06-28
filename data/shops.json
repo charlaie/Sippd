@@ -1,0 +1,49 @@
+{
+  "trendingShops": [
+    {
+      "id": 1,
+      "name": "Ten Ren Tea",
+      "rating": 4.8,
+      "location": "Floor 2, 9 On Pong Rd, Tai Po",
+      "image": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "category": "Tea House",
+      "priceRange": "$$"
+    },
+    {
+      "id": 2,
+      "name": "Tiger Sugar",
+      "rating": 4.9,
+      "location": "Floor 2, 9 On Pong Rd, Tai Po",
+      "image": "https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "category": "Bubble Tea",
+      "priceRange": "$$"
+    },
+    {
+      "id": 3,
+      "name": "CHICHA San Chen",
+      "rating": 4.7,
+      "location": "Floor 2, 9 On Pong Rd, Tai Po",
+      "image": "https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "category": "Tea Specialty",
+      "priceRange": "$$$"
+    },
+    {
+      "id": 4,
+      "name": "Gong Cha",
+      "rating": 4.6,
+      "location": "Shop 3, Ground Floor, Tai Po Plaza",
+      "image": "https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "category": "Bubble Tea",
+      "priceRange": "$$"
+    },
+    {
+      "id": 5,
+      "name": "The Alley",
+      "rating": 4.8,
+      "location": "Unit 12, Tai Po Market Square",
+      "image": "https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=400",
+      "category": "Specialty Drinks",
+      "priceRange": "$$$"
+    }
+  ]
+}
