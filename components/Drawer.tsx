@@ -3,6 +3,7 @@ import {
   View,
   Dimensions,
   Platform,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Animated, {
   useSharedValue,
@@ -11,7 +12,7 @@ import Animated, {
   runOnJS,
   useAnimatedGestureHandler,
 } from 'react-native-reanimated';
-import { PanGestureHandler } from 'react-native-gesture-handler';
+import { PanGestureHandler, GestureDetector, Gesture } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -94,15 +95,18 @@ export default function Drawer({
     }
   }, [isVisible]);
 
-  const gestureHandler = useAnimatedGestureHandler({
-    onStart: (_, context) => {
-      context.startY = translateY.value;
-      context.startState = currentState.value;
-    },
-    onActive: (event, context) => {
+  // Create gesture using the new Gesture API for better web compatibility
+  const panGesture = Gesture.Pan()
+    .enabled(enableGestures)
+    .onStart(() => {
+      'worklet';
+      // Store initial state for gesture calculations
+    })
+    .onUpdate((event) => {
+      'worklet';
       if (!enableGestures) return;
       
-      const newY = context.startY + event.translationY;
+      const newY = drawerState[currentState.value] + event.translationY;
       
       // Constrain the movement
       if (newY < drawerState.full) {
@@ -112,13 +116,15 @@ export default function Drawer({
       } else {
         translateY.value = newY;
       }
-    },
-    onEnd: (event, context) => {
+    })
+    .onEnd((event) => {
+      'worklet';
       if (!enableGestures) return;
       
       const currentY = translateY.value;
       const velocity = event.velocityY;
       const translation = event.translationY;
+      const startState = currentState.value;
 
       // Determine target position based on gesture
       let targetState: 'hidden' | 'half' | 'full';
@@ -127,14 +133,14 @@ export default function Drawer({
         // Fast gesture - prioritize velocity direction
         if (velocity > 0) {
           // Fast swipe down
-          if (context.startState === 'full') {
+          if (startState === 'full') {
             targetState = 'half';
           } else {
             targetState = 'hidden';
           }
         } else {
           // Fast swipe up
-          if (context.startState === 'half') {
+          if (startState === 'half') {
             targetState = 'full';
           } else {
             targetState = 'half';
@@ -158,13 +164,13 @@ export default function Drawer({
 
         // Override based on translation direction if significant
         if (Math.abs(translation) > SNAP_THRESHOLD) {
-          if (translation > 0 && context.startState === 'full') {
+          if (translation > 0 && startState === 'full') {
             // Dragged down from full
             targetState = 'half';
-          } else if (translation > 0 && context.startState === 'half') {
+          } else if (translation > 0 && startState === 'half') {
             // Dragged down from half
             targetState = 'hidden';
-          } else if (translation < 0 && context.startState === 'half') {
+          } else if (translation < 0 && startState === 'half') {
             // Dragged up from half
             targetState = 'full';
           }
@@ -172,8 +178,7 @@ export default function Drawer({
       }
 
       runOnJS(animateToState)(targetState, true);
-    },
-  });
+    });
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -189,24 +194,30 @@ export default function Drawer({
     };
   });
 
+  const handleOverlayPress = () => {
+    if (enableGestures) {
+      animateToState('hidden', true);
+    }
+  };
   return (
     <>
       {/* Overlay */}
-      <Animated.View
-        style={[
-          overlayAnimatedStyle,
-          {
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 998,
-          }
-        ]}
-        className="bg-black/50"
-        onTouchEnd={() => enableGestures && animateToState('hidden', true)}
-      />
+      <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <Animated.View
+          style={[
+            overlayAnimatedStyle,
+            {
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 998,
+            }
+          ]}
+          className="bg-black/50"
+        />
+      </TouchableWithoutFeedback>
 
       {/* Drawer */}
       <Animated.View 
@@ -224,11 +235,11 @@ export default function Drawer({
         className={`bg-white rounded-t-2xl shadow-2xl ${className}`}
       >
         {enableGestures && (
-          <PanGestureHandler onGestureEvent={gestureHandler}>
+          <GestureDetector gesture={panGesture}>
             <Animated.View className="items-center py-3">
               <View className="w-10 h-1 bg-gray-300 rounded-full" />
             </Animated.View>
-          </PanGestureHandler>
+          </GestureDetector>
         )}
         
         {children}
