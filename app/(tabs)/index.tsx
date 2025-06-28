@@ -32,19 +32,19 @@ export default function HomePage() {
       id: 1,
       title: 'HKD 3 TenRen\'s Tea flash discount voucher',
       buttonText: 'Grab Now',
-      icon: '🎯',
+      image: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=60&h=60',
     },
     {
       id: 2,
       title: 'Buy One Get One Free limited voucher',
       buttonText: 'Grab Now',
-      icon: '🎁',
+      image: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=60&h=60',
     },
     {
       id: 3,
       title: '10% off selected drink items',
       buttonText: 'Grab Now',
-      icon: '🎁',
+      image: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=60&h=60',
     },
   ];
 
@@ -156,11 +156,17 @@ export default function HomePage() {
             {vouchers.map((voucher, index) => (
               <View
                 key={voucher.id}
-                className={`bg-white rounded-2xl shadow-sm mr-4 p-4 pb-6 relative overflow-visible ${index === vouchers.length - 1 ? 'mr-6' : ''}`}
+                className={`bg-white rounded-2xl shadow-sm mr-4 pt-6 px-4 pb-6 relative overflow-visible ${index === vouchers.length - 1 ? 'mr-6' : ''}`}
                 style={{ width: 200 }}
               >
-                <View className="items-center mb-4">
-                  <Text className="text-3xl mb-2">{voucher.icon}</Text>
+                <View className="items-center mb-6">
+                  <View className="w-16 h-16 rounded-full bg-white items-center justify-center shadow-sm mb-3">
+                    <Image
+                      source={{ uri: voucher.image }}
+                      className="w-10 h-10 rounded-full"
+                      resizeMode="cover"
+                    />
+                  </View>
                   <Text className="text-primary-text text-sm font-medium text-center leading-5">
                     {voucher.title}
                   </Text>
@@ -169,22 +175,22 @@ export default function HomePage() {
                 {/* Dashed separator line */}
                 <View 
                   className="absolute left-0 right-0 h-px border-b border-dashed border-gray-300"
-                  style={{ top: '55%' }}
+                  style={{ top: '60%' }}
                 />
                 
                 {/* Left circular cutout */}
                 <View 
-                  className="absolute w-6 h-6 rounded-full bg-background shadow-sm -left-3"
-                  style={{ top: 'calc(55% - 12px)' }}
+                  className="absolute w-6 h-6 rounded-full bg-white -left-3"
+                  style={{ top: 'calc(60% - 12px)' }}
                 />
                 
                 {/* Right circular cutout */}
                 <View 
-                  className="absolute w-6 h-6 rounded-full bg-background shadow-sm -right-3"
-                  style={{ top: 'calc(55% - 12px)' }}
+                  className="absolute w-6 h-6 rounded-full bg-white -right-3"
+                  style={{ top: 'calc(60% - 12px)' }}
                 />
                 
-                <TouchableOpacity className="bg-secondary-primary rounded-full py-2 px-4">
+                <TouchableOpacity className="bg-secondary-primary rounded-full py-2 self-center mt-4 w-40">
                   <Text className="text-white text-sm font-semibold text-center">
                     {voucher.buttonText}
                   </Text>
