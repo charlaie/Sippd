@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Text } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 interface Shop {
@@ -43,31 +43,30 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
     longitudeDelta: 0.0421,
   });
 
-  const mapStyle = [
-    {
-      featureType: 'poi',
-      elementType: 'labels',
-      stylers: [{ visibility: 'off' }],
-    },
-    {
-      featureType: 'transit',
-      elementType: 'labels',
-      stylers: [{ visibility: 'off' }],
-    },
-  ];
+  // Simplified map style - removing custom styling temporarily
+  const mapStyle = [];
 
   return (
-    <View className="flex-1">
+    <View style={{ flex: 1 }}>
       <MapView
-        className="flex-1"
+        style={{ flex: 1 }}
         provider={Platform.OS === 'android' ? PROVIDER_GOOGLE : undefined}
         initialRegion={region}
-        customMapStyle={mapStyle}
+        // Temporarily removing custom map style
+        // customMapStyle={mapStyle}
         showsUserLocation={true}
         showsMyLocationButton={false}
         showsCompass={false}
         toolbarEnabled={false}
+        // Add some debugging props
+        onMapReady={() => {
+          console.log('Map is ready');
+        }}
+        onRegionChange={(region) => {
+          console.log('Region changed:', region);
+        }}
       >
+        {/* Temporarily simplifying markers */}
         {shops.map((shop) => (
           <Marker
             key={shop.id}
@@ -76,13 +75,9 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
               longitude: shop.longitude,
             }}
             onPress={() => onShopPress(shop)}
-          >
-            <View className="items-center justify-center">
-              <View className="w-6 h-6 rounded-full bg-secondary-primary border-3 border-white shadow-lg items-center justify-center">
-                <View className="w-2 h-2 rounded-full bg-white" />
-              </View>
-            </View>
-          </Marker>
+            title={shop.name}
+            description={shop.location}
+          />
         ))}
       </MapView>
     </View>
