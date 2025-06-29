@@ -47,10 +47,10 @@ const sugarLevels = [
 ];
 
 const iceLevels = [
-  { id: 'no', label: 'No Ice', icon: '🚫' },
-  { id: 'light', label: 'Light', icon: '❄️' },
-  { id: 'regular', label: 'Regular', icon: '🧊' },
-  { id: 'extra', label: 'Extra', icon: '🧊🧊' },
+  { id: 'no', label: 'No Ice', icon: Snowflake },
+  { id: 'light', label: 'Light', icon: Snowflake },
+  { id: 'regular', label: 'Regular', icon: Snowflake },
+  { id: 'extra', label: 'Extra', icon: Snowflake },
 ];
 
 const milkTypes = [
