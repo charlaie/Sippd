@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform } from 'r
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Map, List } from 'lucide-react-native';
 import MapViewComponent from '../../components/MapView';
-// import MapViewDebug from '../../components/MapView.debug'; // Uncomment for debugging
 import ShopDrawer from '../../components/ShopDrawer';
 
 interface Shop {
@@ -213,7 +212,6 @@ export default function ExplorePage() {
       <View style={styles.content}>
         {viewMode === 'map' ? (
           <MapViewComponent shops={mockShops} onShopPress={handleShopPress} />
-          // <MapViewDebug shops={mockShops} onShopPress={handleShopPress} /> // Uncomment for debugging
         ) : (
           <View style={styles.listView}>
             <Text style={styles.comingSoon}>List View Coming Soon</Text>
