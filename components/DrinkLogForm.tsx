@@ -11,17 +11,7 @@ import {
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { 
-  Coffee, 
-  Droplets, 
-  Snowflake, 
-  Milk, 
-  Package, 
-  Cup,
-  Save,
-  AlertCircle,
-  Check
-} from 'lucide-react-native';
+import { Coffee, Droplets, Snowflake, Milk, Package, CupSoda as Cup, Save, CircleAlert as AlertCircle, Check } from 'lucide-react-native';
 import { useDrinkStore } from '../store/drinkStore';
 import { useUIStore } from '../store/uiStore';
 
