@@ -243,10 +243,10 @@ export default function TrackPage() {
                     top: 4,
                     left: 4,
                     height: 32,
-                    backgroundColor: '#d86a2b',
                     borderRadius: 16,
                   },
                 ]}
+                className="bg-secondary-primary"
               />
               
               {/* Tab Buttons */}
