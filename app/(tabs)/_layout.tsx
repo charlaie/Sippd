@@ -117,7 +117,6 @@ export default function TabLayout() {
         onClose={closeDrinkLogDrawer}
         initialState="full"
         snapPoints={{
-          half: 0.6,
           full: 0.95,
         }}
         enableGestures={true}

@@ -125,54 +125,94 @@ export default function Drawer({
       const velocity = event.velocityY;
       const translation = event.translationY;
       const startState = currentState.value;
+      
+      // Check if half state is available
+      const hasHalfState = snapPoints.half !== undefined;
 
       // Determine target position based on gesture
       let targetState: 'hidden' | 'half' | 'full';
 
-      if (Math.abs(velocity) > 500) {
-        // Fast gesture - prioritize velocity direction
-        if (velocity > 0) {
-          // Fast swipe down
-          if (startState === 'full') {
-            targetState = 'half';
+      if (hasHalfState) {
+        // Three-state logic (full, half, hidden)
+        if (Math.abs(velocity) > 500) {
+          // Fast gesture - prioritize velocity direction
+          if (velocity > 0) {
+            // Fast swipe down
+            if (startState === 'full') {
+              targetState = 'half';
+            } else {
+              targetState = 'hidden';
+            }
           } else {
-            targetState = 'hidden';
+            // Fast swipe up
+            if (startState === 'half') {
+              targetState = 'full';
+            } else {
+              targetState = 'half';
+            }
           }
         } else {
-          // Fast swipe up
-          if (startState === 'half') {
+          // Slow gesture - use position and translation
+          const midBetweenHalfAndFull = (drawerState.half + drawerState.full) / 2;
+          const midBetweenHalfAndHidden = (drawerState.half + drawerState.hidden) / 2;
+
+          if (currentY < midBetweenHalfAndFull) {
+            // Closer to full
             targetState = 'full';
-          } else {
+          } else if (currentY < midBetweenHalfAndHidden) {
+            // Closer to half
             targetState = 'half';
+          } else {
+            // Closer to hidden
+            targetState = 'hidden';
+          }
+
+          // Override based on translation direction if significant
+          if (Math.abs(translation) > SNAP_THRESHOLD) {
+            if (translation > 0 && startState === 'full') {
+              // Dragged down from full
+              targetState = 'half';
+            } else if (translation > 0 && startState === 'half') {
+              // Dragged down from half
+              targetState = 'hidden';
+            } else if (translation < 0 && startState === 'half') {
+              // Dragged up from half
+              targetState = 'full';
+            }
           }
         }
       } else {
-        // Slow gesture - use position and translation
-        const midBetweenHalfAndFull = (drawerState.half + drawerState.full) / 2;
-        const midBetweenHalfAndHidden = (drawerState.half + drawerState.hidden) / 2;
-
-        if (currentY < midBetweenHalfAndFull) {
-          // Closer to full
-          targetState = 'full';
-        } else if (currentY < midBetweenHalfAndHidden) {
-          // Closer to half
-          targetState = 'half';
-        } else {
-          // Closer to hidden
-          targetState = 'hidden';
-        }
-
-        // Override based on translation direction if significant
-        if (Math.abs(translation) > SNAP_THRESHOLD) {
-          if (translation > 0 && startState === 'full') {
-            // Dragged down from full
-            targetState = 'half';
-          } else if (translation > 0 && startState === 'half') {
-            // Dragged down from half
+        // Two-state logic (full, hidden only)
+        if (Math.abs(velocity) > 500) {
+          // Fast gesture - prioritize velocity direction
+          if (velocity > 0) {
+            // Fast swipe down - go to hidden
             targetState = 'hidden';
-          } else if (translation < 0 && startState === 'half') {
-            // Dragged up from half
+          } else {
+            // Fast swipe up - go to full
             targetState = 'full';
+          }
+        } else {
+          // Slow gesture - use position and translation
+          const midBetweenFullAndHidden = (drawerState.full + drawerState.hidden) / 2;
+
+          if (currentY < midBetweenFullAndHidden) {
+            // Closer to full
+            targetState = 'full';
+          } else {
+            // Closer to hidden
+            targetState = 'hidden';
+          }
+
+          // Override based on translation direction if significant
+          if (Math.abs(translation) > SNAP_THRESHOLD) {
+            if (translation > 0) {
+              // Dragged down - go to hidden
+              targetState = 'hidden';
+            } else {
+              // Dragged up - go to full
+              targetState = 'full';
+            }
           }
         }
       }
