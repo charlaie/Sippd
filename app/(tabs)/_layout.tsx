@@ -1,8 +1,11 @@
 import { Tabs } from 'expo-router';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { Chrome as Home, Search, Plus, Map, User } from 'lucide-react-native';
+import { useUIStore } from '../../store/uiStore';
 
 export default function TabLayout() {
+  const { openDrinkLogDrawer } = useUIStore();
+
   return (
     <Tabs
       screenOptions={{
@@ -61,7 +64,11 @@ export default function TabLayout() {
             <Plus size={32} color="#ffffff" strokeWidth={2} />
           ),
           tabBarButton: (props) => (
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <TouchableOpacity 
+              style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+              onPress={openDrinkLogDrawer}
+              activeOpacity={0.7}
+            >
               <View style={{ 
                 width: 56, 
                 height: 56, 
@@ -77,7 +84,7 @@ export default function TabLayout() {
               }}>
                 <Plus size={24} color="#ffffff" strokeWidth={2} />
               </View>
-            </View>
+            </TouchableOpacity>
           ),
         }}
       />
