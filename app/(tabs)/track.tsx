@@ -9,6 +9,11 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { TrendingUp, Calendar, DollarSign, Coffee, Recycle } from 'lucide-react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+} from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -106,9 +111,46 @@ function BarChart({ data, labels, maxHeight }: BarChartProps) {
 
 export default function TrackPage() {
   const [activeTab, setActiveTab] = useState<TabType>('daily');
+  
+  // Animation values for sliding indicator
+  const indicatorPosition = useSharedValue(0);
+  const indicatorWidth = useSharedValue(0);
+  
+  const tabs: TabType[] = ['daily', 'weekly', 'monthly'];
+  const tabContainerWidth = 240; // Fixed width for consistent calculations
+  const tabWidth = tabContainerWidth / tabs.length;
 
   const currentData = trendsData[activeTab];
 
+  // Animated style for the sliding indicator
+  const indicatorStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateX: indicatorPosition.value }],
+      width: indicatorWidth.value,
+    };
+  });
+
+  const handleTabPress = (tab: TabType, index: number) => {
+    setActiveTab(tab);
+    
+    // Animate the indicator to the new position
+    const newPosition = index * tabWidth;
+    indicatorPosition.value = withSpring(newPosition, {
+      damping: 20,
+      stiffness: 300,
+    });
+    indicatorWidth.value = withSpring(tabWidth, {
+      damping: 20,
+      stiffness: 300,
+    });
+  };
+
+  // Initialize indicator position and width
+  React.useEffect(() => {
+    const initialIndex = tabs.indexOf(activeTab);
+    indicatorPosition.value = initialIndex * tabWidth;
+    indicatorWidth.value = tabWidth;
+  }, []);
   return (
     <SafeAreaView className="flex-1 bg-background">
       <StatusBar barStyle="dark-content" backgroundColor="#fffcf6" />
@@ -188,14 +230,33 @@ export default function TrackPage() {
           
           <View className="bg-white rounded-2xl shadow-sm p-6">
             {/* Tab Navigation */}
-            <View className="flex-row bg-gray-100 rounded-full p-1 mb-6 self-center">
-              {(['daily', 'weekly', 'monthly'] as TabType[]).map((tab) => (
+            <View 
+              className="bg-gray-100 rounded-full p-1 mb-6 self-center relative"
+              style={{ width: tabContainerWidth }}
+            >
+              {/* Animated Indicator */}
+              <Animated.View
+                style={[
+                  indicatorStyle,
+                  {
+                    position: 'absolute',
+                    top: 4,
+                    left: 4,
+                    height: 32,
+                    backgroundColor: '#d86a2b',
+                    borderRadius: 16,
+                  },
+                ]}
+              />
+              
+              {/* Tab Buttons */}
+              <View className="flex-row">
+                {tabs.map((tab, index) => (
                 <TouchableOpacity
                   key={tab}
-                  onPress={() => setActiveTab(tab)}
-                  className={`flex-1 py-2 px-4 rounded-full items-center justify-center ${
-                    activeTab === tab ? 'bg-secondary-primary' : 'bg-transparent'
-                  }`}
+                  onPress={() => handleTabPress(tab, index)}
+                  className="py-2 px-4 rounded-full items-center justify-center"
+                  style={{ width: tabWidth }}
                 >
                   <Text
                     className={`text-sm font-semibold capitalize ${
@@ -206,6 +267,7 @@ export default function TrackPage() {
                   </Text>
                 </TouchableOpacity>
               ))}
+              </View>
             </View>
 
             {/* Bar Chart */}
