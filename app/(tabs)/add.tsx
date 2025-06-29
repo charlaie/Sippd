@@ -1,8 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import Drawer from '../../components/Drawer';
-import DrinkLogForm from '../../components/DrinkLogForm';
-import { useUIStore } from '../../store/uiStore';
+import Drawer from '@/components/Drawer';
+import DrinkLogForm from '@/components/DrinkLogForm';
+import { useUIStore } from '@/store/uiStore';
 
 export default function AddPage() {
   const { isDrinkLogDrawerVisible, closeDrinkLogDrawer } = useUIStore();

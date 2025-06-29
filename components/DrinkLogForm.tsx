@@ -12,8 +12,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Coffee, Droplets, Snowflake, Milk, Package, CupSoda as Cup, Save, CircleAlert as AlertCircle, Check } from 'lucide-react-native';
-import { useDrinkStore } from '../store/drinkStore';
-import { useUIStore } from '../store/uiStore';
+import { useDrinkStore } from '@/store/drinkStore';
+import { useUIStore } from '@/store/uiStore';
 
 const drinkSchema = z.object({
   drinkName: z.string().min(1, 'Drink name is required').max(50, 'Name too long'),
