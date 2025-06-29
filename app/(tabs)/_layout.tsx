@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { View, TouchableOpacity } from 'react-native';
 import { Chrome as Home, Search, Plus, Map, User } from 'lucide-react-native';
-import { useUIStore } from '../../store/uiStore';
+import { useUIStore } from '@/store/uiStore';
 
 export default function TabLayout() {
   const { openDrinkLogDrawer } = useUIStore();
