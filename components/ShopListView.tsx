@@ -248,19 +248,19 @@ export default function ShopListView({ shops, onShopPress }: ShopListViewProps) 
       {/* Sort and Filter Controls */}
       <View className="flex-row items-center justify-between px-6 mb-4">
         <TouchableOpacity 
-          className="flex-row items-center bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-100"
+          className="flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm border border-gray-100"
           onPress={() => {
             setShowFilterDropdown(false);
             setShowSortDropdown(!showSortDropdown);
           }}
           activeOpacity={0.7}
         >
-          <ArrowUpDown size={16} color="#707070" />
-          <Text className="text-accent-text text-sm ml-2 font-medium mr-1">
-            Sort by {getSortLabel()}
+          <ArrowUpDown size={14} color="#707070" />
+          <Text className="text-accent-text text-xs ml-1.5 font-medium mr-1">
+            {getSortLabel()}
           </Text>
           <ChevronDown 
-            size={16} 
+            size={14} 
             color="#707070" 
             style={{ 
               transform: [{ rotate: showSortDropdown ? '180deg' : '0deg' }] 
@@ -270,6 +270,7 @@ export default function ShopListView({ shops, onShopPress }: ShopListViewProps) 
         
         <TouchableOpacity 
           className={`flex-row items-center bg-white rounded-xl px-4 py-3 shadow-sm border ${
+          className={`flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm border ${
             selectedFilters.length > 0 ? 'border-secondary-primary' : 'border-gray-100'
           }`}
           onPress={() => {
@@ -278,14 +279,14 @@ export default function ShopListView({ shops, onShopPress }: ShopListViewProps) 
           }}
           activeOpacity={0.7}
         >
-          <Filter size={16} color={selectedFilters.length > 0 ? "#d86a2b" : "#707070"} />
-          <Text className={`text-sm ml-2 font-medium mr-1 ${
+          <Filter size={14} color={selectedFilters.length > 0 ? "#d86a2b" : "#707070"} />
+          <Text className={`text-xs ml-1.5 font-medium mr-1 ${
             selectedFilters.length > 0 ? 'text-secondary-primary' : 'text-accent-text'
           }`}>
             {getFilterLabel()}
           </Text>
           <ChevronDown 
-            size={16} 
+            size={14} 
             color={selectedFilters.length > 0 ? "#d86a2b" : "#707070"}
             style={{ 
               transform: [{ rotate: showFilterDropdown ? '180deg' : '0deg' }] 
