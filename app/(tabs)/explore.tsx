@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, StatusBar, Platform, ScrollView, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Map, List, Filter, ArrowUpDown, Star, MapPin, Clock, Phone } from 'lucide-react-native';
+import { Map, List, ListFilter as Filter, ArrowUpDown, Star, MapPin, Clock, Phone } from 'lucide-react-native';
 import MapViewComponent from '../../components/MapView';
 import ShopDrawer from '../../components/ShopDrawer';
 
