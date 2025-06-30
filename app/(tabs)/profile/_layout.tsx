@@ -3,10 +3,18 @@ import { Stack } from 'expo-router';
 export default function ProfileLayout() {
   return (
     <Stack>
+      screenOptions={{
+        animation: 'slide_from_right',
+        animationDuration: 300,
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+      }}
+    >
       <Stack.Screen 
         name="index" 
         options={{ 
-          headerShown: false 
+          headerShown: false,
+          animation: 'none', // No animation for the main profile page
         }} 
       />
       <Stack.Screen 
@@ -21,6 +29,7 @@ export default function ProfileLayout() {
             fontWeight: 'bold',
           },
           animation: 'slide_from_right',
+          animationDuration: 250,
         }} 
       />
       <Stack.Screen 
@@ -34,6 +43,8 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
+          animationDuration: 250,
         }} 
       />
       <Stack.Screen 
@@ -47,6 +58,8 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
+          animationDuration: 250,
         }} 
       />
       <Stack.Screen 
@@ -60,6 +73,8 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
+          animationDuration: 250,
         }} 
       />
       <Stack.Screen 
@@ -73,6 +88,8 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
+          animationDuration: 250,
         }} 
       />
       <Stack.Screen 
@@ -86,6 +103,8 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_bottom',
+          animationDuration: 300,
         }} 
       />
       <Stack.Screen 
@@ -99,6 +118,9 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_bottom',
+          animationDuration: 300,
+          presentation: 'modal',
         }} 
       />
     </Stack>
