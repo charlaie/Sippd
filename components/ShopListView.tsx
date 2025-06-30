@@ -269,7 +269,6 @@ export default function ShopListView({ shops, onShopPress }: ShopListViewProps) 
         </TouchableOpacity>
         
         <TouchableOpacity 
-          className={`flex-row items-center bg-white rounded-xl px-4 py-3 shadow-sm border ${
           className={`flex-row items-center bg-white rounded-xl px-3 py-2 shadow-sm border ${
             selectedFilters.length > 0 ? 'border-secondary-primary' : 'border-gray-100'
           }`}
