@@ -1,15 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { 
-  MessageCircle, 
-  Phone, 
-  Mail, 
-  FileText, 
-  HelpCircle, 
-  ChevronRight,
-  Search
-} from 'lucide-react-native';
+import { MessageCircle, Phone, Mail, FileText, Circle as HelpCircle, ChevronRight, Search } from 'lucide-react-native';
 
 interface HelpItemProps {
   icon: React.ReactNode;

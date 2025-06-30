@@ -2,15 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { 
-  Ticket, 
-  User, 
-  MessageSquare, 
-  BarChart3, 
-  HelpCircle, 
-  Settings, 
-  ChevronRight 
-} from 'lucide-react-native';
+import { Ticket, User, MessageSquare, ChartBar as BarChart3, Circle as HelpCircle, Settings, ChevronRight } from 'lucide-react-native';
 
 interface MenuItemProps {
   icon: React.ReactNode;

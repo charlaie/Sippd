@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Star, Edit3, Trash2 } from 'lucide-react-native';
+import { Star, LocationEdit as Edit3, Trash2 } from 'lucide-react-native';
 
 interface ReviewCardProps {
   shopName: string;
