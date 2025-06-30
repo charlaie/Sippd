@@ -76,7 +76,7 @@ const cupTypes = [
   { id: 'reusable', label: 'Reusable Cup' },
 ];
 
-interface SelectionButtonProps {
+interface SelectionButtonsProps {
   options: Array<{ id: string; label: string; icon?: any }>;
   value: string;
   onSelect: (value: string) => void;
@@ -84,10 +84,10 @@ interface SelectionButtonProps {
   columns?: number;
 }
 
-function SelectionButtons({ options, value, onSelect, error, columns = 2 }: SelectionButtonProps) {
+function SelectionButtons({ options, value, onSelect, error, columns = 2 }: SelectionButtonsProps) {
   return (
     <View>
-      <View className={`flex-row flex-wrap gap-2 ${columns === 3 ? 'justify-between' : ''}`}>
+      <View className="flex-row flex-wrap gap-3">
         {options.map((option) => {
           const isSelected = value === option.id;
           const IconComponent = option.icon;
@@ -97,7 +97,7 @@ function SelectionButtons({ options, value, onSelect, error, columns = 2 }: Sele
               key={option.id}
               onPress={() => onSelect(option.id)}
               className={`
-                flex-1 min-w-[45%] px-4 py-3 rounded-xl border-2 flex-row items-center justify-center
+                flex-1 min-w-[45%] px-4 py-4 rounded-2xl border-2 flex-row items-center justify-center
                 ${isSelected 
                   ? 'bg-secondary-primary border-secondary-primary' 
                   : 'bg-white border-gray-200'
@@ -105,18 +105,18 @@ function SelectionButtons({ options, value, onSelect, error, columns = 2 }: Sele
                 ${columns === 3 ? 'min-w-[30%]' : ''}
               `}
               style={{ 
-                minHeight: 48,
+                minHeight: 56,
                 maxWidth: columns === 3 ? '30%' : '48%'
               }}
             >
               {IconComponent && (
                 <IconComponent 
-                  size={16} 
+                  size={18} 
                   color={isSelected ? '#ffffff' : '#707070'} 
                   className="mr-2"
                 />
               )}
-              <Text className={`text-sm font-medium text-center ${
+              <Text className={`text-base font-medium text-center ${
                 isSelected ? 'text-white' : 'text-accent-text'
               }`}>
                 {option.label}
@@ -158,7 +158,7 @@ function TextInputField({
 }: TextInputFieldProps) {
   return (
     <View className="mb-6">
-      <Text className="text-primary-text text-base font-semibold mb-3">
+      <Text className="text-primary-text text-lg font-semibold mb-3">
         {label} {required && <Text className="text-red-500">*</Text>}
       </Text>
       <TextInput
@@ -169,16 +169,16 @@ function TextInputField({
         multiline={multiline}
         maxLength={maxLength}
         className={`
-          bg-white border-2 rounded-xl px-4 py-3 text-primary-text text-base
+          bg-white border-2 rounded-2xl px-4 py-4 text-primary-text text-base
           ${error ? 'border-red-500' : 'border-gray-200'}
-          ${multiline ? 'min-h-[80px]' : 'h-12'}
+          ${multiline ? 'min-h-[100px]' : 'h-14'}
         `}
         style={{
           textAlignVertical: multiline ? 'top' : 'center',
         }}
       />
       {maxLength && (
-        <Text className="text-xs text-accent-text mt-1 text-right">
+        <Text className="text-xs text-accent-text mt-2 text-right">
           {value.length}/{maxLength}
         </Text>
       )}
@@ -266,18 +266,18 @@ export default function DrinkLogForm() {
       keyboardShouldPersistTaps="handled"
     >
       {/* Header */}
-      <View className="py-4 border-b border-gray-100 mb-6">
+      <View className="py-6 border-b border-gray-100 mb-8">
         <Text className="text-2xl font-bold text-primary-text text-center">
           Log Your Drink
         </Text>
-        <Text className="text-accent-text text-center mt-1">
+        <Text className="text-accent-text text-center mt-2">
           Keep track of your favorite beverages
         </Text>
       </View>
 
       {/* Error Display */}
       {error && (
-        <View className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 flex-row items-center">
+        <View className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-8 flex-row items-center">
           <AlertCircle size={20} color="#ef4444" />
           <Text className="text-red-600 ml-2 flex-1">{error}</Text>
           <TouchableOpacity onPress={clearError}>
@@ -287,8 +287,8 @@ export default function DrinkLogForm() {
       )}
 
       {/* Basic Information */}
-      <View className="mb-8">
-        <Text className="text-xl font-bold text-primary-text mb-4">
+      <View className="mb-10">
+        <Text className="text-xl font-bold text-primary-text mb-6">
           Basic Information
         </Text>
         
@@ -326,8 +326,8 @@ export default function DrinkLogForm() {
       </View>
 
       {/* Drink Type */}
-      <View className="mb-8">
-        <Text className="text-xl font-bold text-primary-text mb-4">
+      <View className="mb-10">
+        <Text className="text-xl font-bold text-primary-text mb-6">
           Drink Type
         </Text>
         <Controller
@@ -339,21 +339,21 @@ export default function DrinkLogForm() {
               value={value}
               onSelect={onChange}
               error={errors.drinkType?.message}
-              columns={3}
+              columns={2}
             />
           )}
         />
       </View>
 
       {/* Customization */}
-      <View className="mb-8">
-        <Text className="text-xl font-bold text-primary-text mb-4">
+      <View className="mb-10">
+        <Text className="text-xl font-bold text-primary-text mb-6">
           Customization
         </Text>
         
         {/* Sugar Level */}
-        <View className="mb-6">
-          <Text className="text-primary-text text-base font-semibold mb-3">
+        <View className="mb-8">
+          <Text className="text-primary-text text-lg font-semibold mb-4">
             Sugar Level <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -372,8 +372,8 @@ export default function DrinkLogForm() {
         </View>
 
         {/* Ice Level */}
-        <View className="mb-6">
-          <Text className="text-primary-text text-base font-semibold mb-3">
+        <View className="mb-8">
+          <Text className="text-primary-text text-lg font-semibold mb-4">
             Ice Level <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -391,8 +391,8 @@ export default function DrinkLogForm() {
         </View>
 
         {/* Milk Type */}
-        <View className="mb-6">
-          <Text className="text-primary-text text-base font-semibold mb-3">
+        <View className="mb-8">
+          <Text className="text-primary-text text-lg font-semibold mb-4">
             Milk Type <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -404,7 +404,7 @@ export default function DrinkLogForm() {
                 value={value}
                 onSelect={onChange}
                 error={errors.milkType?.message}
-                columns={3}
+                columns={2}
               />
             )}
           />
@@ -412,14 +412,14 @@ export default function DrinkLogForm() {
       </View>
 
       {/* Size & Cup */}
-      <View className="mb-8">
-        <Text className="text-xl font-bold text-primary-text mb-4">
+      <View className="mb-10">
+        <Text className="text-xl font-bold text-primary-text mb-6">
           Size & Cup
         </Text>
         
         {/* Size */}
-        <View className="mb-6">
-          <Text className="text-primary-text text-base font-semibold mb-3">
+        <View className="mb-8">
+          <Text className="text-primary-text text-lg font-semibold mb-4">
             Size <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -437,8 +437,8 @@ export default function DrinkLogForm() {
         </View>
 
         {/* Cup Type */}
-        <View className="mb-6">
-          <Text className="text-primary-text text-base font-semibold mb-3">
+        <View className="mb-8">
+          <Text className="text-primary-text text-lg font-semibold mb-4">
             Cup Type <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -457,7 +457,7 @@ export default function DrinkLogForm() {
       </View>
 
       {/* Extra Notes */}
-      <View className="mb-8">
+      <View className="mb-10">
         <Controller
           control={control}
           name="extraNotes"
@@ -480,7 +480,7 @@ export default function DrinkLogForm() {
         onPress={handleSubmit(onSubmit)}
         disabled={isLoading || !isValid}
         className={`
-          flex-row items-center justify-center py-4 rounded-xl mb-8
+          flex-row items-center justify-center py-4 rounded-2xl mb-8
           ${isLoading || !isValid 
             ? 'bg-gray-300' 
             : 'bg-secondary-primary'
