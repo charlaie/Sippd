@@ -20,6 +20,7 @@ export default function ProfileLayout() {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          animation: 'slide_from_right',
         }} 
       />
       <Stack.Screen 
