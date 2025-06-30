@@ -2,55 +2,30 @@ import React from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
-import { Ticket, User, MessageSquare, ChartBar as BarChart3, Circle as HelpCircle, Settings, ChevronRight } from 'lucide-react-native';
-
-interface MenuItemProps {
-  icon: React.ReactNode;
-  title: string;
-  onPress: () => void;
-}
-
-function MenuItem({ icon, title, onPress }: MenuItemProps) {
-  return (
-    <TouchableOpacity 
-      className="flex-row items-center justify-between bg-white rounded-2xl p-4 mb-3 shadow-sm"
-      onPress={onPress}
-      activeOpacity={0.7}
-    >
-      <View className="flex-row items-center flex-1">
-        <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
-          {icon}
-        </View>
-        <Text className="text-primary-text text-base font-medium flex-1">
-          {title}
-        </Text>
-      </View>
-      <ChevronRight size={20} color="#707070" />
-    </TouchableOpacity>
-  );
-}
+import { Ticket, User, MessageSquare, ChartBar as BarChart3, Circle as HelpCircle, Settings } from 'lucide-react-native';
+import RoundedButtonGroup from '@/components/RoundedButtonGroup';
 
 export default function ProfilePage() {
   const menuItems = [
     {
       icon: <Ticket size={20} color="#707070" />,
       title: 'Vouchers',
-      route: '/profile/vouchers'
+      onPress: () => router.push('/profile/vouchers')
     },
     {
       icon: <User size={20} color="#707070" />,
       title: 'My Payment Details',
-      route: '/profile/payment-details'
+      onPress: () => router.push('/profile/payment-details')
     },
     {
       icon: <MessageSquare size={20} color="#707070" />,
       title: 'Reviews',
-      route: '/profile/reviews'
+      onPress: () => router.push('/profile/reviews')
     },
     {
       icon: <BarChart3 size={20} color="#707070" />,
       title: 'My Tier List',
-      route: '/profile/tier-list'
+      onPress: () => router.push('/profile/tier-list')
     },
   ];
 
@@ -58,12 +33,12 @@ export default function ProfilePage() {
     {
       icon: <HelpCircle size={20} color="#707070" />,
       title: 'Help Centre',
-      route: '/profile/help-centre'
+      onPress: () => router.push('/profile/help-centre')
     },
     {
       icon: <Settings size={20} color="#707070" />,
       title: 'Settings',
-      route: '/profile/settings'
+      onPress: () => router.push('/profile/settings')
     },
   ];
 
@@ -107,28 +82,14 @@ export default function ProfilePage() {
           </View>
         </View>
 
-        {/* Menu Items */}
+        {/* Menu Items Group */}
         <View className="px-6 mb-6">
-          {menuItems.map((item, index) => (
-            <MenuItem
-              key={index}
-              icon={item.icon}
-              title={item.title}
-              onPress={() => router.push(item.route as any)}
-            />
-          ))}
+          <RoundedButtonGroup items={menuItems} />
         </View>
 
-        {/* Support Section */}
+        {/* Support Section Group */}
         <View className="px-6 mb-8">
-          {supportItems.map((item, index) => (
-            <MenuItem
-              key={index}
-              icon={item.icon}
-              title={item.title}
-              onPress={() => router.push(item.route as any)}
-            />
-          ))}
+          <RoundedButtonGroup items={supportItems} />
         </View>
 
         {/* Bottom spacing for tab bar */}
