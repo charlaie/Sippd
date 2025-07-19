@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+
+This is a React Native project using expo.
+Use Nativewind for styling.
+React-hook-form for forms.
+Zod for form validation
+Zustand for state management.
