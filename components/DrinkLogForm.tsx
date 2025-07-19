@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  Alert,
-  Platform,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Coffee, Droplets, Snowflake, Milk, Package, CupSoda as Cup, Save, CircleAlert as AlertCircle, Check } from 'lucide-react-native';
+import {
+  Coffee,
+  Droplets,
+  Snowflake,
+  Milk,
+  Package,
+  CupSoda as Cup,
+  Save,
+  CircleAlert as AlertCircle,
+  Check,
+} from 'lucide-react-native';
 import { useDrinkStore } from '@/store/drinkStore';
 import { useUIStore } from '@/store/uiStore';
 
@@ -77,7 +79,7 @@ const cupTypes = [
 ];
 
 interface SelectionButtonsProps {
-  options: Array<{ id: string; label: string; icon?: any }>;
+  options: { id: string; label: string; icon?: any }[];
   value: string;
   onSelect: (value: string) => void;
   error?: string;
@@ -91,34 +93,35 @@ function SelectionButtons({ options, value, onSelect, error, columns = 2 }: Sele
         {options.map((option) => {
           const isSelected = value === option.id;
           const IconComponent = option.icon;
-          
+
           return (
             <TouchableOpacity
               key={option.id}
               onPress={() => onSelect(option.id)}
               className={`
-                flex-1 min-w-[45%] px-4 py-4 rounded-2xl border-2 flex-row items-center justify-center
-                ${isSelected 
-                  ? 'bg-secondary-primary border-secondary-primary' 
-                  : 'bg-white border-gray-200'
+                min-w-[45%] flex-1 flex-row items-center justify-center rounded-2xl border-2 px-4 py-4
+                ${
+                  isSelected
+                    ? 'border-secondary-primary bg-secondary-primary'
+                    : 'border-gray-200 bg-white'
                 }
                 ${columns === 3 ? 'min-w-[30%]' : ''}
               `}
-              style={{ 
+              style={{
                 minHeight: 56,
-                maxWidth: columns === 3 ? '30%' : '48%'
-              }}
-            >
+                maxWidth: columns === 3 ? '30%' : '48%',
+              }}>
               {IconComponent && (
-                <IconComponent 
-                  size={18} 
-                  color={isSelected ? '#ffffff' : '#707070'} 
+                <IconComponent
+                  size={18}
+                  color={isSelected ? '#ffffff' : '#707070'}
                   className="mr-2"
                 />
               )}
-              <Text className={`text-base font-medium text-center ${
-                isSelected ? 'text-white' : 'text-accent-text'
-              }`}>
+              <Text
+                className={`text-center text-base font-medium ${
+                  isSelected ? 'text-white' : 'text-accent-text'
+                }`}>
                 {option.label}
               </Text>
             </TouchableOpacity>
@@ -126,9 +129,9 @@ function SelectionButtons({ options, value, onSelect, error, columns = 2 }: Sele
         })}
       </View>
       {error && (
-        <View className="flex-row items-center mt-2">
+        <View className="mt-2 flex-row items-center">
           <AlertCircle size={14} color="#ef4444" />
-          <Text className="text-red-500 text-xs ml-1">{error}</Text>
+          <Text className="ml-1 text-xs text-red-500">{error}</Text>
         </View>
       )}
     </View>
@@ -146,19 +149,19 @@ interface TextInputFieldProps {
   required?: boolean;
 }
 
-function TextInputField({ 
-  label, 
-  value, 
-  onChangeText, 
-  placeholder, 
-  error, 
+function TextInputField({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  error,
   multiline = false,
   maxLength,
-  required = false
+  required = false,
 }: TextInputFieldProps) {
   return (
     <View className="mb-6">
-      <Text className="text-primary-text text-lg font-semibold mb-3">
+      <Text className="mb-3 text-lg font-semibold text-primary-text">
         {label} {required && <Text className="text-red-500">*</Text>}
       </Text>
       <TextInput
@@ -169,8 +172,8 @@ function TextInputField({
         multiline={multiline}
         maxLength={maxLength}
         className={`
-          bg-white border-2 rounded-2xl px-4 py-4 text-primary-text text-base
-          ${error ? 'border-red-500' : 'border-gray-200'}
+          rounded-2xl border-2 border-gray-200 bg-white px-4 py-4 text-base text-primary-text
+          ${error ? 'outline outline-2 outline-red-500' : ''}
           ${multiline ? 'min-h-[100px]' : 'h-14'}
         `}
         style={{
@@ -178,14 +181,14 @@ function TextInputField({
         }}
       />
       {maxLength && (
-        <Text className="text-xs text-accent-text mt-2 text-right">
+        <Text className="mt-2 text-right text-xs text-accent-text">
           {value.length}/{maxLength}
         </Text>
       )}
       {error && (
-        <View className="flex-row items-center mt-2">
+        <View className="mt-2 flex-row items-center">
           <AlertCircle size={14} color="#ef4444" />
-          <Text className="text-red-500 text-xs ml-1">{error}</Text>
+          <Text className="ml-1 text-xs text-red-500">{error}</Text>
         </View>
       )}
     </View>
@@ -223,17 +226,16 @@ export default function DrinkLogForm() {
     try {
       clearError();
       await addDrink(data);
-      
+
       // Show success state
       setShowSuccess(true);
-      
+
       // Reset form and close drawer after delay
       setTimeout(() => {
         reset();
         setShowSuccess(false);
         closeDrinkLogDrawer();
       }, 1500);
-      
     } catch (error) {
       // Error is handled by the store
       if (Platform.OS === 'web') {
@@ -245,14 +247,12 @@ export default function DrinkLogForm() {
 
   if (showSuccess) {
     return (
-      <View className="flex-1 justify-center items-center px-6">
-        <View className="w-20 h-20 bg-green-500 rounded-full items-center justify-center mb-4">
+      <View className="flex-1 items-center justify-center px-6">
+        <View className="mb-4 h-20 w-20 items-center justify-center rounded-full bg-green-500">
           <Check size={40} color="#ffffff" />
         </View>
-        <Text className="text-2xl font-bold text-primary-text mb-2">
-          Drink Logged!
-        </Text>
-        <Text className="text-accent-text text-center">
+        <Text className="mb-2 text-2xl font-bold text-primary-text">Drink Logged!</Text>
+        <Text className="text-center text-accent-text">
           Your drink has been successfully saved to your collection.
         </Text>
       </View>
@@ -260,38 +260,33 @@ export default function DrinkLogForm() {
   }
 
   return (
-    <ScrollView 
-      className="flex-1 px-6" 
+    <ScrollView
+      className="flex-1 px-6"
       showsVerticalScrollIndicator={false}
-      keyboardShouldPersistTaps="handled"
-    >
+      keyboardShouldPersistTaps="handled">
       {/* Header */}
-      <View className="py-6 border-b border-gray-100 mb-8">
-        <Text className="text-2xl font-bold text-primary-text text-center">
-          Log Your Drink
-        </Text>
-        <Text className="text-accent-text text-center mt-2">
+      <View className="mb-8 border-b border-gray-100 py-6">
+        <Text className="text-center text-2xl font-bold text-primary-text">Log Your Drink</Text>
+        <Text className="mt-2 text-center text-accent-text">
           Keep track of your favorite beverages
         </Text>
       </View>
 
       {/* Error Display */}
       {error && (
-        <View className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-8 flex-row items-center">
+        <View className="mb-8 flex-row items-center rounded-2xl border border-red-200 bg-red-50 p-4">
           <AlertCircle size={20} color="#ef4444" />
-          <Text className="text-red-600 ml-2 flex-1">{error}</Text>
+          <Text className="ml-2 flex-1 text-red-600">{error}</Text>
           <TouchableOpacity onPress={clearError}>
-            <Text className="text-red-600 font-medium">Dismiss</Text>
+            <Text className="font-medium text-red-600">Dismiss</Text>
           </TouchableOpacity>
         </View>
       )}
 
       {/* Basic Information */}
       <View className="mb-10">
-        <Text className="text-xl font-bold text-primary-text mb-6">
-          Basic Information
-        </Text>
-        
+        <Text className="mb-6 text-xl font-bold text-primary-text">Basic Information</Text>
+
         <Controller
           control={control}
           name="drinkName"
@@ -327,9 +322,7 @@ export default function DrinkLogForm() {
 
       {/* Drink Type */}
       <View className="mb-10">
-        <Text className="text-xl font-bold text-primary-text mb-6">
-          Drink Type
-        </Text>
+        <Text className="mb-6 text-xl font-bold text-primary-text">Drink Type</Text>
         <Controller
           control={control}
           name="drinkType"
@@ -347,13 +340,11 @@ export default function DrinkLogForm() {
 
       {/* Customization */}
       <View className="mb-10">
-        <Text className="text-xl font-bold text-primary-text mb-6">
-          Customization
-        </Text>
-        
+        <Text className="mb-6 text-xl font-bold text-primary-text">Customization</Text>
+
         {/* Sugar Level */}
         <View className="mb-8">
-          <Text className="text-primary-text text-lg font-semibold mb-4">
+          <Text className="mb-4 text-lg font-semibold text-primary-text">
             Sugar Level <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -373,7 +364,7 @@ export default function DrinkLogForm() {
 
         {/* Ice Level */}
         <View className="mb-8">
-          <Text className="text-primary-text text-lg font-semibold mb-4">
+          <Text className="mb-4 text-lg font-semibold text-primary-text">
             Ice Level <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -392,7 +383,7 @@ export default function DrinkLogForm() {
 
         {/* Milk Type */}
         <View className="mb-8">
-          <Text className="text-primary-text text-lg font-semibold mb-4">
+          <Text className="mb-4 text-lg font-semibold text-primary-text">
             Milk Type <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -413,13 +404,11 @@ export default function DrinkLogForm() {
 
       {/* Size & Cup */}
       <View className="mb-10">
-        <Text className="text-xl font-bold text-primary-text mb-6">
-          Size & Cup
-        </Text>
-        
+        <Text className="mb-6 text-xl font-bold text-primary-text">Size & Cup</Text>
+
         {/* Size */}
         <View className="mb-8">
-          <Text className="text-primary-text text-lg font-semibold mb-4">
+          <Text className="mb-4 text-lg font-semibold text-primary-text">
             Size <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -438,7 +427,7 @@ export default function DrinkLogForm() {
 
         {/* Cup Type */}
         <View className="mb-8">
-          <Text className="text-primary-text text-lg font-semibold mb-4">
+          <Text className="mb-4 text-lg font-semibold text-primary-text">
             Cup Type <Text className="text-red-500">*</Text>
           </Text>
           <Controller
@@ -480,22 +469,18 @@ export default function DrinkLogForm() {
         onPress={handleSubmit(onSubmit)}
         disabled={isLoading || !isValid}
         className={`
-          flex-row items-center justify-center py-4 rounded-2xl mb-8
-          ${isLoading || !isValid 
-            ? 'bg-gray-300' 
-            : 'bg-secondary-primary'
-          }
-        `}
-      >
+          mb-8 flex-row items-center justify-center rounded-2xl py-4
+          ${isLoading || !isValid ? 'bg-gray-300' : 'bg-secondary-primary'}
+        `}>
         {isLoading ? (
           <>
-            <View className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-            <Text className="text-white text-lg font-bold">Saving...</Text>
+            <View className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+            <Text className="text-lg font-bold text-white">Saving...</Text>
           </>
         ) : (
           <>
             <Save size={20} color="#ffffff" className="mr-2" />
-            <Text className="text-white text-lg font-bold">Save Drink</Text>
+            <Text className="text-lg font-bold text-white">Save Drink</Text>
           </>
         )}
       </TouchableOpacity>

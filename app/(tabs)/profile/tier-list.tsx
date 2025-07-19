@@ -14,52 +14,62 @@ interface TierCardProps {
   benefits: string[];
 }
 
-function TierCard({ tier, emoji, color, bgColor, current = false, shopsRequired, shopsVisited, benefits }: TierCardProps) {
+function TierCard({
+  tier,
+  emoji,
+  color,
+  bgColor,
+  current = false,
+  shopsRequired,
+  shopsVisited,
+  benefits,
+}: TierCardProps) {
   const progress = (shopsVisited / shopsRequired) * 100;
-  
+
   return (
-    <View className={`rounded-2xl p-6 mb-4 ${current ? 'border-2 border-secondary-primary' : ''}`} style={{ backgroundColor: bgColor }}>
+    <View
+      className={`mb-4 rounded-2xl p-6 ${current ? 'border-2 border-secondary-primary' : ''}`}
+      style={{ backgroundColor: bgColor }}>
       {current && (
-        <View className="absolute top-4 right-4 bg-secondary-primary rounded-full px-3 py-1">
-          <Text className="text-white text-xs font-bold">CURRENT</Text>
+        <View className="absolute right-4 top-4 rounded-full bg-secondary-primary px-3 py-1">
+          <Text className="text-xs font-bold text-white">CURRENT</Text>
         </View>
       )}
-      
-      <View className="flex-row items-center mb-4">
-        <View className="w-16 h-16 rounded-full items-center justify-center mr-4" style={{ backgroundColor: color }}>
+
+      <View className="mb-4 flex-row items-center">
+        <View
+          className="mr-4 h-16 w-16 items-center justify-center rounded-full"
+          style={{ backgroundColor: color }}>
           <Text className="text-3xl">{emoji}</Text>
         </View>
         <View className="flex-1">
-          <Text className="text-primary-text text-xl font-bold mb-1">
-            {tier} Tier
-          </Text>
-          <Text className="text-accent-text text-sm">
+          <Text className="mb-1 text-xl font-bold text-primary-text">{tier} Tier</Text>
+          <Text className="text-sm text-accent-text">
             {shopsVisited}/{shopsRequired} shops visited
           </Text>
         </View>
       </View>
-      
+
       {current && (
         <View className="mb-4">
-          <View className="bg-white rounded-full h-2 mb-2">
-            <View 
-              className="bg-secondary-primary rounded-full h-2" 
+          <View className="mb-2 h-2 rounded-full bg-white">
+            <View
+              className="h-2 rounded-full bg-secondary-primary"
               style={{ width: `${Math.min(progress, 100)}%` }}
             />
           </View>
-          <Text className="text-accent-text text-xs">
-            {shopsRequired - shopsVisited > 0 
+          <Text className="text-xs text-accent-text">
+            {shopsRequired - shopsVisited > 0
               ? `${shopsRequired - shopsVisited} more shops to next tier`
-              : 'Tier completed!'
-            }
+              : 'Tier completed!'}
           </Text>
         </View>
       )}
-      
+
       <View>
-        <Text className="text-primary-text text-sm font-semibold mb-2">Benefits:</Text>
+        <Text className="mb-2 text-sm font-semibold text-primary-text">Benefits:</Text>
         {benefits.map((benefit, index) => (
-          <Text key={index} className="text-accent-text text-sm mb-1">
+          <Text key={index} className="mb-1 text-sm text-accent-text">
             • {benefit}
           </Text>
         ))}
@@ -78,11 +88,7 @@ export default function TierListPage() {
       current: true,
       shopsRequired: 10,
       shopsVisited: 7,
-      benefits: [
-        'Basic rewards on visits',
-        'Birthday discount',
-        'Access to member events'
-      ]
+      benefits: ['Basic rewards on visits', 'Birthday discount', 'Access to member events'],
     },
     {
       tier: 'Silver',
@@ -96,8 +102,8 @@ export default function TierListPage() {
         'All Bronze benefits',
         '5% discount on all drinks',
         'Priority customer support',
-        'Exclusive silver member vouchers'
-      ]
+        'Exclusive silver member vouchers',
+      ],
     },
     {
       tier: 'Gold',
@@ -112,8 +118,8 @@ export default function TierListPage() {
         '10% discount on all drinks',
         'Free drink on birthday',
         'Early access to new menu items',
-        'VIP customer support'
-      ]
+        'VIP customer support',
+      ],
     },
     {
       tier: 'Platinum',
@@ -129,27 +135,27 @@ export default function TierListPage() {
         'Monthly free drink',
         'Exclusive platinum events',
         'Personal drink recommendations',
-        'Skip the line privilege'
-      ]
-    }
+        'Skip the line privilege',
+      ],
+    },
   ];
 
-  const currentTier = tiers.find(tier => tier.current);
+  const currentTier = tiers.find((tier) => tier.current);
 
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Current Tier Highlight */}
-        <View className="bg-secondary-background rounded-2xl p-6 mb-6 mt-4">
+        <View className="mb-6 mt-4 rounded-2xl bg-secondary-background p-6">
           <View className="flex-row items-center justify-between">
             <View className="flex-1">
-              <Text className="text-secondary-primary text-lg font-bold mb-2">
+              <Text className="mb-2 text-lg font-bold text-secondary-primary">
                 Your Current Tier
               </Text>
-              <Text className="text-accent-text text-sm mb-4">
+              <Text className="mb-4 text-sm text-accent-text">
                 Keep visiting shops to unlock more rewards!
               </Text>
-              
+
               <View className="flex-row justify-between">
                 <View className="items-center">
                   <Text className="text-2xl font-bold text-secondary-primary">
@@ -171,40 +177,32 @@ export default function TierListPage() {
                 </View>
               </View>
             </View>
-            
-            <View className="w-16 h-16 bg-secondary-primary rounded-full items-center justify-center ml-4">
+
+            <View className="ml-4 h-16 w-16 items-center justify-center rounded-full bg-secondary-primary">
               <Trophy size={32} color="#ffffff" />
             </View>
           </View>
         </View>
 
         {/* Quick Actions */}
-        <View className="flex-row gap-3 mb-6">
-          <TouchableOpacity className="flex-1 bg-white rounded-2xl p-4 items-center shadow-sm">
+        <View className="mb-6 flex-row gap-3">
+          <TouchableOpacity className="flex-1 items-center rounded-2xl bg-white p-4 shadow-sm">
             <Target size={24} color="#d86a2b" />
-            <Text className="text-primary-text text-sm font-semibold mt-2">
-              Set Goals
-            </Text>
+            <Text className="mt-2 text-sm font-semibold text-primary-text">Set Goals</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex-1 bg-white rounded-2xl p-4 items-center shadow-sm">
+          <TouchableOpacity className="flex-1 items-center rounded-2xl bg-white p-4 shadow-sm">
             <Gift size={24} color="#d86a2b" />
-            <Text className="text-primary-text text-sm font-semibold mt-2">
-              Claim Rewards
-            </Text>
+            <Text className="mt-2 text-sm font-semibold text-primary-text">Claim Rewards</Text>
           </TouchableOpacity>
-          <TouchableOpacity className="flex-1 bg-white rounded-2xl p-4 items-center shadow-sm">
+          <TouchableOpacity className="flex-1 items-center rounded-2xl bg-white p-4 shadow-sm">
             <TrendingUp size={24} color="#d86a2b" />
-            <Text className="text-primary-text text-sm font-semibold mt-2">
-              View Progress
-            </Text>
+            <Text className="mt-2 text-sm font-semibold text-primary-text">View Progress</Text>
           </TouchableOpacity>
         </View>
 
         {/* All Tiers */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            All Tiers
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">All Tiers</Text>
           {tiers.map((tier, index) => (
             <TierCard key={index} {...tier} />
           ))}

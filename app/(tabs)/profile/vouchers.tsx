@@ -12,44 +12,45 @@ interface VoucherCardProps {
   shopImage: string;
 }
 
-function VoucherCard({ title, description, discount, expiryDate, isUsed = false, shopImage }: VoucherCardProps) {
+function VoucherCard({
+  title,
+  description,
+  discount,
+  expiryDate,
+  isUsed = false,
+  shopImage,
+}: VoucherCardProps) {
   return (
-    <View className={`bg-white rounded-2xl shadow-sm mb-4 overflow-hidden ${isUsed ? 'opacity-60' : ''}`}>
+    <View
+      className={`mb-4 overflow-hidden rounded-2xl bg-white shadow-sm ${isUsed ? 'opacity-60' : ''}`}>
       <View className="p-4">
-        <View className="flex-row items-center mb-3">
+        <View className="mb-3 flex-row items-center">
           <Image
             source={{ uri: shopImage }}
-            className="w-12 h-12 rounded-full mr-3"
+            className="mr-3 h-12 w-12 rounded-full"
             resizeMode="cover"
           />
           <View className="flex-1">
-            <Text className="text-primary-text text-lg font-bold mb-1">
-              {title}
-            </Text>
-            <Text className="text-accent-text text-sm">
-              {description}
-            </Text>
+            <Text className="mb-1 text-lg font-bold text-primary-text">{title}</Text>
+            <Text className="text-sm text-accent-text">{description}</Text>
           </View>
-          <View className={`px-3 py-1 rounded-full ${isUsed ? 'bg-gray-200' : 'bg-secondary-primary'}`}>
+          <View
+            className={`rounded-full px-3 py-1 ${isUsed ? 'bg-gray-200' : 'bg-secondary-primary'}`}>
             <Text className={`text-xs font-bold ${isUsed ? 'text-gray-500' : 'text-white'}`}>
               {isUsed ? 'USED' : discount}
             </Text>
           </View>
         </View>
-        
+
         <View className="border-t border-dashed border-gray-200 pt-3">
           <View className="flex-row items-center justify-between">
             <View className="flex-row items-center">
               <Clock size={14} color="#707070" />
-              <Text className="text-accent-text text-xs ml-1">
-                Expires: {expiryDate}
-              </Text>
+              <Text className="ml-1 text-xs text-accent-text">Expires: {expiryDate}</Text>
             </View>
             {!isUsed && (
-              <TouchableOpacity className="bg-secondary-primary rounded-full px-4 py-2">
-                <Text className="text-white text-xs font-semibold">
-                  Use Now
-                </Text>
+              <TouchableOpacity className="rounded-full bg-secondary-primary px-4 py-2">
+                <Text className="text-xs font-semibold text-white">Use Now</Text>
               </TouchableOpacity>
             )}
           </View>
@@ -63,17 +64,19 @@ export default function VouchersPage() {
   const activeVouchers = [
     {
       title: 'HKD 3 Off',
-      description: 'TenRen\'s Tea flash discount',
+      description: "TenRen's Tea flash discount",
       discount: '3 HKD',
       expiryDate: '31 Dec 2024',
-      shopImage: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=100'
+      shopImage:
+        'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=100',
     },
     {
       title: 'Buy One Get One',
       description: 'Tiger Sugar limited offer',
       discount: 'BOGO',
       expiryDate: '15 Jan 2025',
-      shopImage: 'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=100'
+      shopImage:
+        'https://images.pexels.com/photos/1251175/pexels-photo-1251175.jpeg?auto=compress&cs=tinysrgb&w=100',
     },
   ];
 
@@ -84,7 +87,8 @@ export default function VouchersPage() {
       discount: '10%',
       expiryDate: '20 Dec 2024',
       isUsed: true,
-      shopImage: 'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=100'
+      shopImage:
+        'https://images.pexels.com/photos/302899/pexels-photo-302899.jpeg?auto=compress&cs=tinysrgb&w=100',
     },
   ];
 
@@ -92,16 +96,16 @@ export default function VouchersPage() {
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Stats Card */}
-        <View className="bg-secondary-background rounded-2xl p-6 mb-6 mt-4">
+        <View className="mb-6 mt-4 rounded-2xl bg-secondary-background p-6">
           <View className="flex-row items-center justify-between">
             <View className="flex-1">
-              <Text className="text-secondary-primary text-lg font-bold mb-2">
+              <Text className="mb-2 text-lg font-bold text-secondary-primary">
                 Your Voucher Stats
               </Text>
-              <Text className="text-accent-text text-sm mb-4">
+              <Text className="mb-4 text-sm text-accent-text">
                 Keep collecting to unlock more rewards!
               </Text>
-              
+
               <View className="flex-row justify-between">
                 <View className="items-center">
                   <Text className="text-2xl font-bold text-secondary-primary">
@@ -116,15 +120,13 @@ export default function VouchersPage() {
                   <Text className="text-xs text-accent-text">Used</Text>
                 </View>
                 <View className="items-center">
-                  <Text className="text-2xl font-bold text-secondary-primary">
-                    $12
-                  </Text>
+                  <Text className="text-2xl font-bold text-secondary-primary">$12</Text>
                   <Text className="text-xs text-accent-text">Saved</Text>
                 </View>
               </View>
             </View>
-            
-            <View className="w-16 h-16 bg-secondary-primary rounded-full items-center justify-center ml-4">
+
+            <View className="ml-4 h-16 w-16 items-center justify-center rounded-full bg-secondary-primary">
               <Gift size={32} color="#ffffff" />
             </View>
           </View>
@@ -132,20 +134,16 @@ export default function VouchersPage() {
 
         {/* Active Vouchers */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            Active Vouchers
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">Active Vouchers</Text>
           {activeVouchers.length > 0 ? (
-            activeVouchers.map((voucher, index) => (
-              <VoucherCard key={index} {...voucher} />
-            ))
+            activeVouchers.map((voucher, index) => <VoucherCard key={index} {...voucher} />)
           ) : (
-            <View className="bg-white rounded-2xl p-8 items-center">
+            <View className="items-center rounded-2xl bg-white p-8">
               <Ticket size={48} color="#d86a2b" />
-              <Text className="text-primary-text text-lg font-semibold mt-4 mb-2">
+              <Text className="mb-2 mt-4 text-lg font-semibold text-primary-text">
                 No Active Vouchers
               </Text>
-              <Text className="text-accent-text text-center">
+              <Text className="text-center text-accent-text">
                 Visit shops and complete challenges to earn vouchers!
               </Text>
             </View>
@@ -155,9 +153,7 @@ export default function VouchersPage() {
         {/* Used Vouchers */}
         {usedVouchers.length > 0 && (
           <View className="mb-6">
-            <Text className="text-primary-text text-xl font-bold mb-4">
-              Recently Used
-            </Text>
+            <Text className="mb-4 text-xl font-bold text-primary-text">Recently Used</Text>
             {usedVouchers.map((voucher, index) => (
               <VoucherCard key={index} {...voucher} />
             ))}

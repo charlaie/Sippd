@@ -16,18 +16,18 @@ interface Shop {
   phone: string;
   website: string;
   description: string;
-  featuredItems: Array<{
+  featuredItems: {
     name: string;
     price: string;
     image: string;
-  }>;
-  reviews: Array<{
+  }[];
+  reviews: {
     id: number;
     user: string;
     rating: number;
     comment: string;
     userImage: string;
-  }>;
+  }[];
 }
 
 interface MapViewComponentProps {
@@ -64,8 +64,7 @@ export default function MapViewComponent({ shops, onShopPress }: MapViewComponen
         }}
         onRegionChange={(region) => {
           console.log('Region changed:', region);
-        }}
-      >
+        }}>
         {/* Temporarily simplifying markers */}
         {shops.map((shop) => (
           <Marker

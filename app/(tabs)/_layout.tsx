@@ -45,46 +45,40 @@ export default function TabLayout() {
           name="index"
           options={{
             title: 'Home',
-            tabBarIcon: ({ size, color }) => (
-              <Home size={size} color={color} strokeWidth={2} />
-            ),
+            tabBarIcon: ({ size, color }) => <Home size={size} color={color} strokeWidth={2} />,
           }}
         />
         <Tabs.Screen
           name="explore"
           options={{
             title: 'Explore',
-            tabBarIcon: ({ size, color }) => (
-              <Search size={size} color={color} strokeWidth={2} />
-            ),
+            tabBarIcon: ({ size, color }) => <Search size={size} color={color} strokeWidth={2} />,
           }}
         />
         <Tabs.Screen
           name="add"
           options={{
             title: '',
-            tabBarIcon: ({ size, color }) => (
-              <Plus size={32} color="#ffffff" strokeWidth={2} />
-            ),
+            tabBarIcon: ({ size, color }) => <Plus size={32} color="#ffffff" strokeWidth={2} />,
             tabBarButton: (props) => (
-              <TouchableOpacity 
+              <TouchableOpacity
                 style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
                 onPress={openDrinkLogDrawer}
-                activeOpacity={0.7}
-              >
-                <View style={{ 
-                  width: 56, 
-                  height: 56, 
-                  backgroundColor: '#d86a2b', 
-                  borderRadius: 28, 
-                  alignItems: 'center', 
-                  justifyContent: 'center',
-                  shadowColor: '#000',
-                  shadowOffset: { width: 0, height: 2 },
-                  shadowOpacity: 0.25,
-                  shadowRadius: 4,
-                  elevation: 5,
-                }}>
+                activeOpacity={0.7}>
+                <View
+                  style={{
+                    width: 56,
+                    height: 56,
+                    backgroundColor: '#d86a2b',
+                    borderRadius: 28,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                  }}>
                   <Plus size={24} color="#ffffff" strokeWidth={2} />
                 </View>
               </TouchableOpacity>
@@ -95,18 +89,14 @@ export default function TabLayout() {
           name="track"
           options={{
             title: 'Track',
-            tabBarIcon: ({ size, color }) => (
-              <Map size={size} color={color} strokeWidth={2} />
-            ),
+            tabBarIcon: ({ size, color }) => <Map size={size} color={color} strokeWidth={2} />,
           }}
         />
         <Tabs.Screen
           name="profile"
           options={{
             title: 'Profile',
-            tabBarIcon: ({ size, color }) => (
-              <User size={size} color={color} strokeWidth={2} />
-            ),
+            tabBarIcon: ({ size, color }) => <User size={size} color={color} strokeWidth={2} />,
           }}
         />
       </Tabs>
@@ -120,8 +110,7 @@ export default function TabLayout() {
           full: 0.95,
         }}
         enableGestures={true}
-        enableHaptics={true}
-      >
+        enableHaptics={true}>
         <DrinkLogForm />
       </Drawer>
     </>

@@ -15,7 +15,7 @@ interface RoundedButtonGroupProps {
 
 export default function RoundedButtonGroup({ items, className = '' }: RoundedButtonGroupProps) {
   return (
-    <View className={`bg-white rounded-2xl shadow-sm overflow-hidden ${className}`}>
+    <View className={`overflow-hidden rounded-2xl bg-white shadow-sm ${className}`}>
       {items.map((item, index) => (
         <TouchableOpacity
           key={index}
@@ -23,15 +23,12 @@ export default function RoundedButtonGroup({ items, className = '' }: RoundedBut
             index < items.length - 1 ? 'border-b border-gray-100' : ''
           }`}
           onPress={item.onPress}
-          activeOpacity={0.7}
-        >
-          <View className="flex-row items-center flex-1">
-            <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
+          activeOpacity={0.7}>
+          <View className="flex-1 flex-row items-center">
+            <View className="mr-4 h-10 w-10 items-center justify-center rounded-xl bg-gray-50">
               {item.icon}
             </View>
-            <Text className="text-primary-text text-base font-medium flex-1">
-              {item.title}
-            </Text>
+            <Text className="flex-1 text-base font-medium text-primary-text">{item.title}</Text>
           </View>
           <ChevronRight size={20} color="#707070" />
         </TouchableOpacity>

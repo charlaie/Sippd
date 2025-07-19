@@ -9,16 +9,16 @@ export default function ProfileLayout() {
         gestureEnabled: true,
         gestureDirection: 'horizontal',
       }}>
-      <Stack.Screen 
-        name="index" 
-        options={{ 
+      <Stack.Screen
+        name="index"
+        options={{
           headerShown: false,
           animation: 'none', // No animation for the main profile page
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="vouchers" 
-        options={{ 
+      <Stack.Screen
+        name="vouchers"
+        options={{
           title: 'Vouchers',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -29,11 +29,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_right',
           animationDuration: 250,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="payment-details" 
-        options={{ 
+      <Stack.Screen
+        name="payment-details"
+        options={{
           title: 'My Payment Details',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -44,11 +44,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_right',
           animationDuration: 250,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="reviews" 
-        options={{ 
+      <Stack.Screen
+        name="reviews"
+        options={{
           title: 'Reviews',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -59,11 +59,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_right',
           animationDuration: 250,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="tier-list" 
-        options={{ 
+      <Stack.Screen
+        name="tier-list"
+        options={{
           title: 'My Tier List',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -74,11 +74,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_right',
           animationDuration: 250,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="help-centre" 
-        options={{ 
+      <Stack.Screen
+        name="help-centre"
+        options={{
           title: 'Help Centre',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -89,11 +89,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_right',
           animationDuration: 250,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="settings" 
-        options={{ 
+      <Stack.Screen
+        name="settings"
+        options={{
           title: 'Settings',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -104,11 +104,11 @@ export default function ProfileLayout() {
           },
           animation: 'slide_from_bottom',
           animationDuration: 300,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="edit-profile" 
-        options={{ 
+      <Stack.Screen
+        name="edit-profile"
+        options={{
           title: 'Update Personal Info',
           headerStyle: {
             backgroundColor: '#fffcf6',
@@ -120,7 +120,7 @@ export default function ProfileLayout() {
           animation: 'slide_from_bottom',
           animationDuration: 300,
           presentation: 'modal',
-        }} 
+        }}
       />
     </Stack>
   );

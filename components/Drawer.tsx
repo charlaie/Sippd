@@ -1,10 +1,5 @@
 import React, { useEffect, ReactNode } from 'react';
-import {
-  View,
-  Dimensions,
-  Platform,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { View, Dimensions, Platform, TouchableWithoutFeedback } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -71,7 +66,7 @@ export default function Drawer({
       damping: 20,
       stiffness: 90,
     });
-    
+
     if (currentState.value !== state) {
       currentState.value = state;
       if (withHaptic) {
@@ -105,9 +100,9 @@ export default function Drawer({
     .onUpdate((event) => {
       'worklet';
       if (!enableGestures) return;
-      
+
       const newY = drawerState[currentState.value] + event.translationY;
-      
+
       // Constrain the movement
       if (newY < drawerState.full) {
         translateY.value = drawerState.full;
@@ -120,12 +115,12 @@ export default function Drawer({
     .onEnd((event) => {
       'worklet';
       if (!enableGestures) return;
-      
+
       const currentY = translateY.value;
       const velocity = event.velocityY;
       const translation = event.translationY;
       const startState = currentState.value;
-      
+
       // Check if half state is available
       const hasHalfState = snapPoints.half !== undefined;
 
@@ -227,7 +222,8 @@ export default function Drawer({
   });
 
   const overlayAnimatedStyle = useAnimatedStyle(() => {
-    const opacity = 1 - (translateY.value - drawerState.full) / (drawerState.hidden - drawerState.full);
+    const opacity =
+      1 - (translateY.value - drawerState.full) / (drawerState.hidden - drawerState.full);
     return {
       opacity: Math.max(0, Math.min(1, opacity)),
       pointerEvents: translateY.value >= drawerState.hidden ? 'none' : 'auto',
@@ -253,14 +249,14 @@ export default function Drawer({
               right: 0,
               bottom: 0,
               zIndex: 998,
-            }
+            },
           ]}
           className="bg-black/50"
         />
       </TouchableWithoutFeedback>
 
       {/* Drawer */}
-      <Animated.View 
+      <Animated.View
         style={[
           animatedStyle,
           {
@@ -270,18 +266,17 @@ export default function Drawer({
             right: 0,
             height: SCREEN_HEIGHT,
             zIndex: 999,
-          }
+          },
         ]}
-        className={`bg-white rounded-t-2xl shadow-2xl ${className}`}
-      >
+        className={`rounded-t-2xl bg-white shadow-2xl ${className}`}>
         {enableGestures && (
           <GestureDetector gesture={panGesture}>
             <Animated.View className="items-center py-3">
-              <View className="w-10 h-1 bg-gray-300 rounded-full" />
+              <View className="h-1 w-10 rounded-full bg-gray-300" />
             </Animated.View>
           </GestureDetector>
         )}
-        
+
         {children}
       </Animated.View>
     </>

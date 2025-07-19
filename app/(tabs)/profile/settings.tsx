@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { 
-  Bell, 
-  Shield, 
-  Globe, 
-  Moon, 
-  Volume2, 
+import {
+  Bell,
+  Shield,
+  Globe,
+  Moon,
+  Volume2,
   ChevronRight,
   LogOut,
-  Trash2
+  Trash2,
 } from 'lucide-react-native';
 
 interface SettingItemProps {
@@ -21,27 +21,30 @@ interface SettingItemProps {
   destructive?: boolean;
 }
 
-function SettingItem({ icon, title, description, onPress, rightElement, destructive = false }: SettingItemProps) {
+function SettingItem({
+  icon,
+  title,
+  description,
+  onPress,
+  rightElement,
+  destructive = false,
+}: SettingItemProps) {
   return (
-    <TouchableOpacity 
-      className="bg-white rounded-2xl p-4 mb-3 shadow-sm"
+    <TouchableOpacity
+      className="mb-3 rounded-2xl bg-white p-4 shadow-sm"
       onPress={onPress}
-      activeOpacity={0.7}
-    >
+      activeOpacity={0.7}>
       <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
-          <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
+        <View className="flex-1 flex-row items-center">
+          <View className="mr-4 h-10 w-10 items-center justify-center rounded-xl bg-gray-50">
             {icon}
           </View>
           <View className="flex-1">
-            <Text className={`text-base font-medium ${destructive ? 'text-red-500' : 'text-primary-text'}`}>
+            <Text
+              className={`text-base font-medium ${destructive ? 'text-red-500' : 'text-primary-text'}`}>
               {title}
             </Text>
-            {description && (
-              <Text className="text-accent-text text-sm mt-1">
-                {description}
-              </Text>
-            )}
+            {description && <Text className="mt-1 text-sm text-accent-text">{description}</Text>}
           </View>
         </View>
         {rightElement || <ChevronRight size={20} color="#707070" />}
@@ -60,19 +63,15 @@ interface ToggleSettingProps {
 
 function ToggleSetting({ icon, title, description, value, onValueChange }: ToggleSettingProps) {
   return (
-    <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+    <View className="mb-3 rounded-2xl bg-white p-4 shadow-sm">
       <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
-          <View className="w-10 h-10 bg-gray-50 rounded-xl items-center justify-center mr-4">
+        <View className="flex-1 flex-row items-center">
+          <View className="mr-4 h-10 w-10 items-center justify-center rounded-xl bg-gray-50">
             {icon}
           </View>
           <View className="flex-1">
-            <Text className="text-primary-text text-base font-medium">
-              {title}
-            </Text>
-            <Text className="text-accent-text text-sm mt-1">
-              {description}
-            </Text>
+            <Text className="text-base font-medium text-primary-text">{title}</Text>
+            <Text className="mt-1 text-sm text-accent-text">{description}</Text>
           </View>
         </View>
         <Switch
@@ -96,13 +95,13 @@ export default function SettingsPage() {
       icon: <Shield size={20} color="#707070" />,
       title: 'Privacy & Security',
       description: 'Manage your privacy settings',
-      onPress: () => console.log('Privacy settings')
+      onPress: () => console.log('Privacy settings'),
     },
     {
       icon: <Globe size={20} color="#707070" />,
       title: 'Language',
       description: 'English',
-      onPress: () => console.log('Language settings')
+      onPress: () => console.log('Language settings'),
     },
   ];
 
@@ -112,21 +111,21 @@ export default function SettingsPage() {
       title: 'Push Notifications',
       description: 'Get notified about new vouchers and updates',
       value: notifications,
-      onValueChange: setNotifications
+      onValueChange: setNotifications,
     },
     {
       icon: <Volume2 size={20} color="#707070" />,
       title: 'Sound Effects',
       description: 'Play sounds for app interactions',
       value: soundEffects,
-      onValueChange: setSoundEffects
+      onValueChange: setSoundEffects,
     },
     {
       icon: <Moon size={20} color="#707070" />,
       title: 'Dark Mode',
       description: 'Use dark theme throughout the app',
       value: darkMode,
-      onValueChange: setDarkMode
+      onValueChange: setDarkMode,
     },
   ];
 
@@ -135,14 +134,14 @@ export default function SettingsPage() {
       icon: <LogOut size={20} color="#ef4444" />,
       title: 'Sign Out',
       onPress: () => console.log('Sign out'),
-      destructive: true
+      destructive: true,
     },
     {
       icon: <Trash2 size={20} color="#ef4444" />,
       title: 'Delete Account',
       description: 'Permanently delete your account and all data',
       onPress: () => console.log('Delete account'),
-      destructive: true
+      destructive: true,
     },
   ];
 
@@ -151,9 +150,7 @@ export default function SettingsPage() {
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Account Settings */}
         <View className="mb-6 mt-4">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            Account
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">Account</Text>
           {accountSettings.map((setting, index) => (
             <SettingItem key={index} {...setting} />
           ))}
@@ -161,9 +158,7 @@ export default function SettingsPage() {
 
         {/* App Settings */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            App Settings
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">App Settings</Text>
           {appSettings.map((setting, index) => (
             <ToggleSetting key={index} {...setting} />
           ))}
@@ -171,9 +166,7 @@ export default function SettingsPage() {
 
         {/* About */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            About
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">About</Text>
           <SettingItem
             icon={<Globe size={20} color="#707070" />}
             title="Terms of Service"
@@ -194,9 +187,7 @@ export default function SettingsPage() {
 
         {/* Danger Zone */}
         <View className="mb-6">
-          <Text className="text-red-500 text-xl font-bold mb-4">
-            Danger Zone
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-red-500">Danger Zone</Text>
           {dangerZone.map((setting, index) => (
             <SettingItem key={index} {...setting} />
           ))}

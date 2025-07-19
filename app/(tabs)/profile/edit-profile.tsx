@@ -12,12 +12,17 @@ interface InputFieldProps {
   maxLength?: number;
 }
 
-function InputField({ label, value, onChangeText, placeholder, multiline = false, maxLength }: InputFieldProps) {
+function InputField({
+  label,
+  value,
+  onChangeText,
+  placeholder,
+  multiline = false,
+  maxLength,
+}: InputFieldProps) {
   return (
     <View className="mb-6">
-      <Text className="text-primary-text text-base font-semibold mb-3">
-        {label}
-      </Text>
+      <Text className="mb-3 text-base font-semibold text-primary-text">{label}</Text>
       <TextInput
         value={value}
         onChangeText={onChangeText}
@@ -25,7 +30,7 @@ function InputField({ label, value, onChangeText, placeholder, multiline = false
         placeholderTextColor="#a0a0a0"
         multiline={multiline}
         maxLength={maxLength}
-        className={`bg-white border-2 border-gray-200 rounded-xl px-4 py-3 text-primary-text text-base ${
+        className={`rounded-xl border-2 border-gray-200 bg-white px-4 py-3 text-base text-primary-text ${
           multiline ? 'min-h-[80px]' : 'h-12'
         }`}
         style={{
@@ -33,7 +38,7 @@ function InputField({ label, value, onChangeText, placeholder, multiline = false
         }}
       />
       {maxLength && (
-        <Text className="text-xs text-accent-text mt-1 text-right">
+        <Text className="mt-1 text-right text-xs text-accent-text">
           {value.length}/{maxLength}
         </Text>
       )}
@@ -45,7 +50,9 @@ export default function EditProfilePage() {
   const [name, setName] = useState('Charli');
   const [email, setEmail] = useState('charli@example.com');
   const [phone, setPhone] = useState('+852 1234 5678');
-  const [bio, setBio] = useState('Bubble tea enthusiast exploring Hong Kong\'s best drink spots! 🧋');
+  const [bio, setBio] = useState(
+    "Bubble tea enthusiast exploring Hong Kong's best drink spots! 🧋"
+  );
   const [location, setLocation] = useState('Hong Kong');
 
   const handleSave = () => {
@@ -57,22 +64,22 @@ export default function EditProfilePage() {
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Profile Picture Section */}
-        <View className="items-center mb-8 mt-4">
+        <View className="mb-8 mt-4 items-center">
           <View className="relative">
-            <View className="w-24 h-24 rounded-full border-2 border-secondary-primary overflow-hidden">
+            <View className="h-24 w-24 overflow-hidden rounded-full border-2 border-secondary-primary">
               <Image
-                source={{ uri: 'https://images.pexels.com/photos/3768911/pexels-photo-3768911.jpeg?auto=compress&cs=tinysrgb&w=200' }}
-                className="w-full h-full"
+                source={{
+                  uri: 'https://images.pexels.com/photos/3768911/pexels-photo-3768911.jpeg?auto=compress&cs=tinysrgb&w=200',
+                }}
+                className="h-full w-full"
                 resizeMode="cover"
               />
             </View>
-            <TouchableOpacity className="absolute -bottom-2 -right-2 w-8 h-8 bg-secondary-primary rounded-full items-center justify-center">
+            <TouchableOpacity className="absolute -bottom-2 -right-2 h-8 w-8 items-center justify-center rounded-full bg-secondary-primary">
               <Camera size={16} color="#ffffff" />
             </TouchableOpacity>
           </View>
-          <Text className="text-accent-text text-sm mt-3">
-            Tap to change profile picture
-          </Text>
+          <Text className="mt-3 text-sm text-accent-text">Tap to change profile picture</Text>
         </View>
 
         {/* Form Fields */}
@@ -116,42 +123,32 @@ export default function EditProfilePage() {
 
         {/* Preferences Section */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            Preferences
-          </Text>
-          
-          <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+          <Text className="mb-4 text-xl font-bold text-primary-text">Preferences</Text>
+
+          <View className="mb-3 rounded-2xl bg-white p-4 shadow-sm">
             <View className="flex-row items-center justify-between">
               <View className="flex-1">
-                <Text className="text-primary-text text-base font-medium mb-1">
+                <Text className="mb-1 text-base font-medium text-primary-text">
                   Favorite Drink Type
                 </Text>
-                <Text className="text-accent-text text-sm">
-                  Milk Tea
-                </Text>
+                <Text className="text-sm text-accent-text">Milk Tea</Text>
               </View>
               <TouchableOpacity>
-                <Text className="text-secondary-primary text-sm font-medium">
-                  Change
-                </Text>
+                <Text className="text-sm font-medium text-secondary-primary">Change</Text>
               </TouchableOpacity>
             </View>
           </View>
 
-          <View className="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+          <View className="mb-3 rounded-2xl bg-white p-4 shadow-sm">
             <View className="flex-row items-center justify-between">
               <View className="flex-1">
-                <Text className="text-primary-text text-base font-medium mb-1">
+                <Text className="mb-1 text-base font-medium text-primary-text">
                   Preferred Sugar Level
                 </Text>
-                <Text className="text-accent-text text-sm">
-                  50%
-                </Text>
+                <Text className="text-sm text-accent-text">50%</Text>
               </View>
               <TouchableOpacity>
-                <Text className="text-secondary-primary text-sm font-medium">
-                  Change
-                </Text>
+                <Text className="text-sm font-medium text-secondary-primary">Change</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -159,15 +156,12 @@ export default function EditProfilePage() {
 
         {/* Save Button */}
         <TouchableOpacity
-          className="bg-secondary-primary rounded-2xl p-4 items-center mb-6"
+          className="mb-6 items-center rounded-2xl bg-secondary-primary p-4"
           onPress={handleSave}
-          activeOpacity={0.7}
-        >
+          activeOpacity={0.7}>
           <View className="flex-row items-center">
             <Save size={20} color="#ffffff" />
-            <Text className="text-white text-base font-bold ml-2">
-              Save Changes
-            </Text>
+            <Text className="ml-2 text-base font-bold text-white">Save Changes</Text>
           </View>
         </TouchableOpacity>
 

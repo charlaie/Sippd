@@ -25,26 +25,20 @@ function PaymentMethod({ type, title, subtitle, isDefault = false }: PaymentMeth
   };
 
   return (
-    <TouchableOpacity className="bg-white rounded-2xl p-4 mb-3 shadow-sm">
+    <TouchableOpacity className="mb-3 rounded-2xl bg-white p-4 shadow-sm">
       <View className="flex-row items-center justify-between">
-        <View className="flex-row items-center flex-1">
-          <View className="w-12 h-12 bg-gray-50 rounded-xl items-center justify-center mr-4">
+        <View className="flex-1 flex-row items-center">
+          <View className="mr-4 h-12 w-12 items-center justify-center rounded-xl bg-gray-50">
             {getIcon()}
           </View>
           <View className="flex-1">
-            <Text className="text-primary-text text-base font-semibold mb-1">
-              {title}
-            </Text>
-            <Text className="text-accent-text text-sm">
-              {subtitle}
-            </Text>
+            <Text className="mb-1 text-base font-semibold text-primary-text">{title}</Text>
+            <Text className="text-sm text-accent-text">{subtitle}</Text>
           </View>
         </View>
         {isDefault && (
-          <View className="bg-secondary-primary rounded-full px-3 py-1">
-            <Text className="text-white text-xs font-semibold">
-              DEFAULT
-            </Text>
+          <View className="rounded-full bg-secondary-primary px-3 py-1">
+            <Text className="text-xs font-semibold text-white">DEFAULT</Text>
           </View>
         )}
       </View>
@@ -78,45 +72,42 @@ export default function PaymentDetailsPage() {
     <SafeAreaView className="flex-1 bg-background">
       <ScrollView className="flex-1 px-6" showsVerticalScrollIndicator={false}>
         {/* Header Info */}
-        <View className="bg-secondary-background rounded-2xl p-6 mb-6 mt-4">
-          <Text className="text-secondary-primary text-lg font-bold mb-2">
-            Payment Methods
-          </Text>
-          <Text className="text-accent-text text-sm">
+        <View className="mb-6 mt-4 rounded-2xl bg-secondary-background p-6">
+          <Text className="mb-2 text-lg font-bold text-secondary-primary">Payment Methods</Text>
+          <Text className="text-sm text-accent-text">
             Manage your payment options for quick and secure transactions
           </Text>
         </View>
 
         {/* Add New Payment Method */}
-        <TouchableOpacity className="bg-white border-2 border-dashed border-gray-300 rounded-2xl p-6 mb-6 items-center">
-          <View className="w-12 h-12 bg-secondary-primary rounded-full items-center justify-center mb-3">
+        <TouchableOpacity className="mb-6 items-center rounded-2xl border-2 border-dashed border-gray-300 bg-white p-6">
+          <View className="mb-3 h-12 w-12 items-center justify-center rounded-full bg-secondary-primary">
             <Plus size={24} color="#ffffff" />
           </View>
-          <Text className="text-primary-text text-base font-semibold mb-1">
+          <Text className="mb-1 text-base font-semibold text-primary-text">
             Add New Payment Method
           </Text>
-          <Text className="text-accent-text text-sm text-center">
+          <Text className="text-center text-sm text-accent-text">
             Add a credit card, mobile payment, or digital wallet
           </Text>
         </TouchableOpacity>
 
         {/* Payment Methods List */}
         <View className="mb-6">
-          <Text className="text-primary-text text-xl font-bold mb-4">
-            Saved Payment Methods
-          </Text>
+          <Text className="mb-4 text-xl font-bold text-primary-text">Saved Payment Methods</Text>
           {paymentMethods.map((method, index) => (
             <PaymentMethod key={index} {...method} />
           ))}
         </View>
 
         {/* Security Info */}
-        <View className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6">
-          <Text className="text-blue-800 text-sm font-semibold mb-2">
+        <View className="mb-6 rounded-2xl border border-blue-200 bg-blue-50 p-4">
+          <Text className="mb-2 text-sm font-semibold text-blue-800">
             🔒 Your payments are secure
           </Text>
-          <Text className="text-blue-600 text-xs leading-5">
-            All payment information is encrypted and stored securely. We never store your full card details on our servers.
+          <Text className="text-xs leading-5 text-blue-600">
+            All payment information is encrypted and stored securely. We never store your full card
+            details on our servers.
           </Text>
         </View>
 
