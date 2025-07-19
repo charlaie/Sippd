@@ -16,6 +16,8 @@ import {
 } from 'lucide-react-native';
 import { useDrinkStore } from '@/store/drinkStore';
 import { useUIStore } from '@/store/uiStore';
+import { TextInputField } from '@/components/ui/TextInputField';
+import { SelectionButtons } from '@/components/ui/SelectionButtons';
 
 const drinkSchema = z.object({
   drinkName: z.string().min(1, 'Drink name is required').max(50, 'Name too long'),
@@ -77,123 +79,6 @@ const cupTypes = [
   { id: 'glass', label: 'Glass' },
   { id: 'reusable', label: 'Reusable Cup' },
 ];
-
-interface SelectionButtonsProps {
-  options: { id: string; label: string; icon?: any }[];
-  value: string;
-  onSelect: (value: string) => void;
-  error?: string;
-  columns?: number;
-}
-
-function SelectionButtons({ options, value, onSelect, error, columns = 2 }: SelectionButtonsProps) {
-  return (
-    <View>
-      <View className="flex-row flex-wrap gap-3">
-        {options.map((option) => {
-          const isSelected = value === option.id;
-          const IconComponent = option.icon;
-
-          return (
-            <TouchableOpacity
-              key={option.id}
-              onPress={() => onSelect(option.id)}
-              className={`
-                min-w-[45%] flex-1 flex-row items-center justify-center rounded-2xl border-2 px-4 py-4
-                ${
-                  isSelected
-                    ? 'border-secondary-primary bg-secondary-primary'
-                    : 'border-gray-200 bg-white'
-                }
-                ${columns === 3 ? 'min-w-[30%]' : ''}
-              `}
-              style={{
-                minHeight: 56,
-                maxWidth: columns === 3 ? '30%' : '48%',
-              }}>
-              {IconComponent && (
-                <IconComponent
-                  size={18}
-                  color={isSelected ? '#ffffff' : '#707070'}
-                  className="mr-2"
-                />
-              )}
-              <Text
-                className={`text-center text-base font-medium ${
-                  isSelected ? 'text-white' : 'text-accent-text'
-                }`}>
-                {option.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-      {error && (
-        <View className="mt-2 flex-row items-center">
-          <AlertCircle size={14} color="#ef4444" />
-          <Text className="ml-1 text-xs text-red-500">{error}</Text>
-        </View>
-      )}
-    </View>
-  );
-}
-
-interface TextInputFieldProps {
-  label: string;
-  value: string;
-  onChangeText: (text: string) => void;
-  placeholder: string;
-  error?: string;
-  multiline?: boolean;
-  maxLength?: number;
-  required?: boolean;
-}
-
-function TextInputField({
-  label,
-  value,
-  onChangeText,
-  placeholder,
-  error,
-  multiline = false,
-  maxLength,
-  required = false,
-}: TextInputFieldProps) {
-  return (
-    <View className="mb-6">
-      <Text className="mb-3 text-lg font-semibold text-primary-text">
-        {label} {required && <Text className="text-red-500">*</Text>}
-      </Text>
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        placeholder={placeholder}
-        placeholderTextColor="#a0a0a0"
-        multiline={multiline}
-        maxLength={maxLength}
-        className={`
-          rounded-2xl border-2 border-gray-200 bg-white px-4 py-4 text-base text-primary-text
-          ${error ? 'outline outline-2 outline-red-500' : ''}
-          ${multiline ? 'min-h-[100px]' : 'h-14'}
-        `}
-        style={{
-          textAlignVertical: multiline ? 'top' : 'center',
-        }}
-      />
-      {maxLength && (
-        <Text className="mt-2 text-right text-xs text-accent-text">
-          {value.length}/{maxLength}
-        </Text>
-      )}
-      {error && (
-        <View className="mt-2 flex-row items-center">
-          <AlertCircle size={14} color="#ef4444" />
-          <Text className="ml-1 text-xs text-red-500">{error}</Text>
-        </View>
-      )}
-    </View>
-  );
-}
 
 export default function DrinkLogForm() {
   const { addDrink, isLoading, error, clearError } = useDrinkStore();
