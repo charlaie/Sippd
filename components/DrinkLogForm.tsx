@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert, Platform } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -18,18 +18,21 @@ import { useDrinkStore } from '@/store/drinkStore';
 import { useUIStore } from '@/store/uiStore';
 import { TextInputField } from '@/components/ui/TextInputField';
 import { SelectionButtons } from '@/components/ui/SelectionButtons';
+import { createSchemaFieldExtractor } from '@/utils/schemaFieldExtractor';
 
 const drinkSchema = z.object({
-  drinkName: z.string().min(1, 'Drink name is required').max(50, 'Name too long'),
-  shopName: z.string().min(1, 'Shop name is required').max(50, 'Name too long'),
-  drinkType: z.string().min(1, 'Please select a drink type'),
-  sugarLevel: z.string().min(1, 'Please select sugar level'),
-  iceLevel: z.string().min(1, 'Please select ice level'),
-  milkType: z.string().min(1, 'Please select milk type'),
-  size: z.string().min(1, 'Please select size'),
-  cupType: z.string().min(1, 'Please select cup type'),
+  drinkName: z.string().min(1, 'Name is required').max(50, 'Name too long'),
+  shopName: z.string().max(50, 'Name too long').optional(),
+  drinkType: z.string().optional(),
+  sugarLevel: z.string().optional(),
+  iceLevel: z.string().optional(),
+  milkType: z.string().optional(),
+  size: z.string().optional(),
+  cupType: z.string().optional(),
   extraNotes: z.string().max(200, 'Notes too long').optional(),
 });
+
+const drinkSchemaExtractor = createSchemaFieldExtractor(drinkSchema);
 
 type DrinkFormData = z.infer<typeof drinkSchema>;
 
@@ -107,6 +110,19 @@ export default function DrinkLogForm() {
     mode: 'onChange',
   });
 
+  // Watch all form fields for changes
+  useEffect(() => {
+    const subscription = watch((formData) => {
+      console.log('Form state:', {
+        values: formData,
+        errors,
+        isValid,
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, errors, isValid]);
+
   const onSubmit = async (data: DrinkFormData) => {
     try {
       clearError();
@@ -182,8 +198,8 @@ export default function DrinkLogForm() {
               onChangeText={onChange}
               placeholder="e.g. Brown Sugar Milk Tea"
               error={errors.drinkName?.message}
-              maxLength={50}
-              required
+              maxLength={drinkSchemaExtractor.getMaxLength('drinkName')}
+              required={drinkSchemaExtractor.isRequired('drinkName')}
             />
           )}
         />
@@ -198,8 +214,8 @@ export default function DrinkLogForm() {
               onChangeText={onChange}
               placeholder="e.g. Tiger Sugar"
               error={errors.shopName?.message}
-              maxLength={50}
-              required
+              maxLength={drinkSchemaExtractor.getMaxLength('shopName')}
+              required={drinkSchemaExtractor.isRequired('shopName')}
             />
           )}
         />
@@ -229,9 +245,7 @@ export default function DrinkLogForm() {
 
         {/* Sugar Level */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-primary-text">
-            Sugar Level <Text className="text-red-500">*</Text>
-          </Text>
+          <Text className="mb-4 text-lg font-semibold text-primary-text">Sugar Level</Text>
           <Controller
             control={control}
             name="sugarLevel"
@@ -241,7 +255,7 @@ export default function DrinkLogForm() {
                 value={value}
                 onSelect={onChange}
                 error={errors.sugarLevel?.message}
-                columns={3}
+                columns={5}
               />
             )}
           />
@@ -249,9 +263,7 @@ export default function DrinkLogForm() {
 
         {/* Ice Level */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-primary-text">
-            Ice Level <Text className="text-red-500">*</Text>
-          </Text>
+          <Text className="mb-4 text-lg font-semibold text-primary-text">Ice Level</Text>
           <Controller
             control={control}
             name="iceLevel"
@@ -268,9 +280,7 @@ export default function DrinkLogForm() {
 
         {/* Milk Type */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-primary-text">
-            Milk Type <Text className="text-red-500">*</Text>
-          </Text>
+          <Text className="mb-4 text-lg font-semibold text-primary-text">Milk Type</Text>
           <Controller
             control={control}
             name="milkType"
@@ -293,9 +303,7 @@ export default function DrinkLogForm() {
 
         {/* Size */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-primary-text">
-            Size <Text className="text-red-500">*</Text>
-          </Text>
+          <Text className="mb-4 text-lg font-semibold text-primary-text">Size</Text>
           <Controller
             control={control}
             name="size"
@@ -312,9 +320,7 @@ export default function DrinkLogForm() {
 
         {/* Cup Type */}
         <View className="mb-8">
-          <Text className="mb-4 text-lg font-semibold text-primary-text">
-            Cup Type <Text className="text-red-500">*</Text>
-          </Text>
+          <Text className="mb-4 text-lg font-semibold text-primary-text">Cup Type</Text>
           <Controller
             control={control}
             name="cupType"

@@ -4,7 +4,7 @@ import { CircleAlert as AlertCircle } from 'lucide-react-native';
 
 interface SelectionButtonsProps {
   options: { id: string; label: string; icon?: any }[];
-  value: string;
+  value: string | undefined;
   onSelect: (value: string) => void;
   error?: string;
   columns?: number;
@@ -17,6 +17,15 @@ export function SelectionButtons({
   error,
   columns = 2,
 }: SelectionButtonsProps) {
+  const handleSelect = (optionId: string) => {
+    // If the option is already selected, unselect it
+    if (value === optionId) {
+      onSelect('');
+    } else {
+      onSelect(optionId);
+    }
+  };
+
   return (
     <View>
       <View className="flex-row flex-wrap gap-3">
@@ -27,7 +36,7 @@ export function SelectionButtons({
           return (
             <TouchableOpacity
               key={option.id}
-              onPress={() => onSelect(option.id)}
+              onPress={() => handleSelect(option.id)}
               className={`
                 min-w-[45%] flex-1 flex-row items-center justify-center rounded-2xl border-2 px-4 py-4
                 ${

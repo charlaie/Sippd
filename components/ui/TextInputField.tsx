@@ -3,7 +3,7 @@ import { CircleAlert as AlertCircle } from 'lucide-react-native';
 
 interface TextInputFieldProps {
   label: string;
-  value: string;
+  value: string | undefined;
   onChangeText: (text: string) => void;
   placeholder: string;
   error?: string;
