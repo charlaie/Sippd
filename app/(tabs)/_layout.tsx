@@ -4,6 +4,7 @@ import { Chrome as Home, Search, Plus, Map, User } from 'lucide-react-native';
 import { useUIStore } from '@/store/uiStore';
 import Drawer from '@/components/Drawer';
 import DrinkLogForm from '@/components/DrinkLogForm';
+import NewDrinkLogForm from '@/components/NewDrinkLogForm';
 
 export default function TabLayout() {
   const { isDrinkLogDrawerVisible, openDrinkLogDrawer, closeDrinkLogDrawer } = useUIStore();
@@ -111,7 +112,8 @@ export default function TabLayout() {
         }}
         enableGestures={true}
         enableHaptics={true}>
-        <DrinkLogForm />
+        {/* <DrinkLogForm /> */}
+        <NewDrinkLogForm />
       </Drawer>
     </>
   );
